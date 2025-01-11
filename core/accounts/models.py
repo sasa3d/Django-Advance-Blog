@@ -4,32 +4,25 @@ from django.contrib.auth.models import (
     BaseUserManager)
 from django.utils.translation import gettext_lazy as _
 
-
-# Create your models here.
-
-
 class UserManager(BaseUserManager):
-   ''' custom user model manager'''
-   def create_user(self, email, password, **extra_fields):
-     """
+    ''' custom user model manager'''
+    def create_user(self, email, password, **extra_fields):
+        """
         Creates and saves a User with the given email,
         and password and extra data fields.
-     """ 
-     if not email:
-            raise ValueError(_('Users must have an email address(""The Email must be set"")'))
-     email = self.normalize_email(email)
-       
-     user = self.model(email=email #or email = self.normalize_email(email)
-                         , **extra_fields)
-     user.set_password(password)
-     user.save() # by default it will save in database or save(using=self._db) 
-     return user
-     
+        """ 
+        if not email:
+            raise ValueError(_('Users must have an email address ("The Email must be set")'))
+        email = self.normalize_email(email)
+        
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
     
-     def create_superuser(self, email, password, **extra_fields):
+    def create_superuser(self, email, password, **extra_fields):
         """
-        Creates and saves a superuser with the given email, date of
-        birth and password.
+        Creates and saves a superuser with the given email and password.
         """
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
@@ -48,15 +41,14 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
-   # is_verified = models.BooleanField(default=False)
-   
-   #USERNAME_FIELD = 'email'
-    first_name = models.CharField(max_length=50)
+    
+    USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
    
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
     
     objects = UserManager()
+    
     def __str__(self):
         return self.email
