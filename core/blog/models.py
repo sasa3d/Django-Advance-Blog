@@ -2,6 +2,8 @@ from django.db import models
 #from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth import get_user_model
+from django.utils import timezone
+
 
 # Create your models here.
 
@@ -29,12 +31,16 @@ class Post(models.Model):
                                  on_delete=models.SET_NULL,
                                  null=True ,blank=True)
     
-    created_date = models.DateTimeField(auto_now_add=True,
-                                        null=True, blank=True)
-    updated_date = models.DateTimeField(auto_now=True,
-                                        null=True, blank=True)
-    published_date = models.DateTimeField(auto_now_add=True,
-                                          null=True, blank=True)
+     # Remove auto_now and auto_now_add
+    created_date = models.DateTimeField(null=True, blank=True,
+                                        # default=timezone.now
+                                        )
+    updated_date = models.DateTimeField(null=True, blank=True,
+                                        # default=timezone.now
+                                        )
+    published_date = models.DateTimeField(null=True, blank=True,
+                                        #   default=timezone.now
+                                          )
     
     
 
