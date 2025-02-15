@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser, PermissionsMixin,
     BaseUserManager)
+
 from django.utils.translation import gettext_lazy as _
 from django.db.models.signals import post_save 
 from django.dispatch import receiver 
@@ -41,12 +42,27 @@ class User(AbstractBaseUser, PermissionsMixin):
     ''' custom User model for our app'''
     email = models.EmailField(unique=True, max_length=255)
     is_superuser = models.BooleanField(default=False)
-    is_staff = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False) # تذکر: 
+    #کسی که یا USERی is_staff نباشد حق دسترسی به پنل ادمین را ندارد
+    
     is_active = models.BooleanField(default=True)
+    # is_verified = models.models.BooleanField(default=True)
     
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
-   
+    """ 
+    # چونکه عامل USERNAME رو برای AUTHENTICATION
+    # , VERIFICATION حذف کرده ایم و ایمیل رو جایگزین نموده
+    # ایم پس باید ذکر  کنیم که شاخص کاری و نقش محور همان 
+    # E-MAIL میباشد و از این دستور استفاده مینماییم  ر USERNAME 
+    """   
+    
+    REQUIRED_FIELDS = []   
+    '''
+    # باید حتما                   
+    #در هنگام ساخت این کلاس فیلدهای مورد نیاز قرار داده شود 
+    # که در اینجا خالی ست چون  نیازمندیهای ما در این پروژه قرار
+    # است از طریق پروفایل تامین شوند
+    '''
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
     
@@ -73,8 +89,7 @@ class Profile(models.Model):
     
 #from django.db.models.signals import post_save
 #from django.dispatch import receiver 
-
-@receiver(post_save, sender=User)
+@receiver(post_save, sender=User)    # for signal conceptual trigger
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
        Profile.objects.create(user=instance)
