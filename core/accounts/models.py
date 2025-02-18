@@ -42,26 +42,27 @@ class User(AbstractBaseUser, PermissionsMixin):
     ''' custom User model for our app'''
     email = models.EmailField(unique=True, max_length=255)
     is_superuser = models.BooleanField(default=False)
-    is_staff = models.BooleanField(default=False) # تذکر: 
-    #کسی که یا USERی is_staff نباشد حق دسترسی به پنل ادمین را ندارد
+    is_staff = models.BooleanField(default=False) 
+    # تذکر: 
+    #کسی که یا USER یا STAFF ی is_staff نباشد حق دسترسی به پنل ادمین را ندارد
     
     is_active = models.BooleanField(default=True)
     # is_verified = models.models.BooleanField(default=True)
     
     USERNAME_FIELD = 'email'
     """ 
-    # چونکه عامل USERNAME رو برای AUTHENTICATION
-    # , VERIFICATION حذف کرده ایم و ایمیل رو جایگزین نموده
-    # ایم پس باید ذکر  کنیم که شاخص کاری و نقش محور همان 
-    # E-MAIL میباشد و از این دستور استفاده مینماییم  ر USERNAME 
+     چونکه عامل USERNAME رو برای AUTHENTICATION
+     , VERIFICATION حذف کرده ایم و ایمیل رو جایگزین نموده
+     ایم پس باید ذکر  کنیم که شاخص کاری و نقش محور همان 
+     E-MAIL میباشد و از این دستور استفاده مینماییم  ر USERNAME 
     """   
     
     REQUIRED_FIELDS = []   
     '''
-    # باید حتما                   
-    #در هنگام ساخت این کلاس فیلدهای مورد نیاز قرار داده شود 
-    # که در اینجا خالی ست چون  نیازمندیهای ما در این پروژه قرار
-    # است از طریق پروفایل تامین شوند
+     باید حتما                   
+     در هنگام ساخت این کلاس فیلدهای مورد نیاز قرار داده شود 
+     که در اینجا خالی ست چون  نیازمندیهای ما در این پروژه قرار
+     است از طریق پروفایل تامین شوند
     '''
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
@@ -69,11 +70,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
     
     def __str__(self):
-        return self.email
+      return self.email
 
-
-
+      
+''' custom Profile model for our app'''
 class Profile(models.Model):
+    
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=250)
     last_name = models.CharField(max_length=250)
@@ -93,7 +95,8 @@ class Profile(models.Model):
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
        Profile.objects.create(user=instance)
-    
+       
+       
     
     
     

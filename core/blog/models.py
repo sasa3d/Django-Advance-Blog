@@ -45,7 +45,7 @@ class Post(models.Model):
     published_date = models.DateTimeField(
         null=True,
         blank=True,
-        #   default=timezone.now
+        # default=timezone.now
     )
 
     def __str__(self):
