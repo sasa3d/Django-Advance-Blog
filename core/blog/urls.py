@@ -1,7 +1,7 @@
 from django.urls import path 
 from . import views 
 # from django.views.generic import TemplateView
-from django.views.generic.base import RedirectView
+# from django.views.generic.base import RedirectView  # noqa: F401
 
 
 app_name = "blog"
@@ -16,5 +16,6 @@ path("fbv-index/", views.indexView, name="fbv-index"),
 #         RedirectView.as_view(url="https://www.maktabkhooneh.com/"),  # noqa: F821
 #         name="go-to-maktabkhooneh",
 #     ),         
-path("go-to-index/", RedirectView.as_view(pattern_name="blog:cbv-index"), name="redirect-to-cbv_index"),
+#path("go-to-index/", RedirectView.as_view(pattern_name="blog:cbv-index"), name="redirect-to-cbv_index"),
+path("go-to-maktab/<int:pk>/", views.RedirectToMaktab.as_view(), name="redirect-to-maktabkhooneh"),
 ]
