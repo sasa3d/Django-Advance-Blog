@@ -1,9 +1,10 @@
 from django.urls import path 
-from .views import indexView 
-from django.views.generic import TemplateView
+from . import views 
+# from django.views.generic import TemplateView
 
-urlpatterns = [ path("fbv-index/", indexView, name="fbv-index"),
-                #path("cbv-index/", indexView, name="cbv-index"),
-                path("cbv-index/", TemplateView.as_view(template_name="index.html", extra_context={"title":"CBV_Index"})),
-              
+urlpatterns = [ 
+path("fbv-index/", views.indexView, name="fbv-index"),
+#path("cbv-index/", indexView, name="cbv-index"),
+#path("cbv-index/", TemplateView.as_view(template_name="index.html", extra_context={"title":"CBV_Index"})),
+ path("cbv-index/", views.indexView.as_view(), name="cbv-index"),             
 ]

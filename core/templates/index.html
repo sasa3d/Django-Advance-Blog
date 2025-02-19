@@ -8,5 +8,11 @@
 <body>
     <h1>Hello Index</h1>
     <p>My name is {{title}}</p>
+    <p>My content is {{content}}</p>
+    {% for post in posts %}
+    <strong>My post is {{post.title}}</strong>
+    <p>{{post.content}}</p>
+    <h1>{{post.author}}</h1>
+    {% endfor %}
 </body>
 </html>
