@@ -7,29 +7,16 @@
   </head>
   <body>
     <h1>blog posts list</h1>
-    # {% comment %} <!-- {% for post in object_list %} --> {% endcomment %}
-
-    context_object_name = 'posts'
-    {% for post in posts %}
-      <div>
-        <h2>
-          <h1>{{ post.title }}</h1>
-            
-        +++++++++++++++++++++++++++++
-          <p>{{ post.content }}</p>
-          **************************
-          <strong>{{ post.created_at }}</strong>
-         <h1>{{ post.author }}</h1>
-         @@@@@@@@@@@@@@@@@@@@@@@@@@@
-          <h3>{{ post.category }}</h3>
-          $$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-          <h4>{{ post.published_date }}</h4>
-          --------------------------------------------------------------------
-          --------------------------------------------------------------------
-        </h2>
-      </div>
-    {% endfor %}
-# block for pagination
+{% for post in posts %}
+  <div>
+    <h1>{{ post.title }}</h1>
+    <p>{{ post.content }}</p>
+    <strong>{{ post.created_at }}</strong>
+    <h2>{{ post.author }}</h2>
+    <h3>{{ post.category }}</h3>
+    <h4>{{ post.published_date }}</h4>
+  </div>
+{% endfor %}
     <div class="pagination">
     <span class="step-links">
         {% if page_obj.has_previous %}
@@ -44,6 +31,7 @@
         {% if page_obj.has_next %}
             <a href="?page={{ page_obj.next_page_number }}">next</a>
             <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
         {% endif %}
     </span>
 </div>
