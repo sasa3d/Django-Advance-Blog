@@ -58,6 +58,9 @@ class PostList(ListView):
         posts = Post.objects.filter(status=True)
         #posts = Post.objects.filter(status=False)
         return posts
+    
+    paginate_by = 2
+    ordering = ["-created_at"]
      
 
     

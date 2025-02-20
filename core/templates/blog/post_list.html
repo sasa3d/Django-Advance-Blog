@@ -13,10 +13,39 @@
     {% for post in posts %}
       <div>
         <h2>
-          <p>{{ post.title }}</p>
+          <h1>{{ post.title }}</h1>
+            
+        +++++++++++++++++++++++++++++
           <p>{{ post.content }}</p>
+          **************************
+          <strong>{{ post.created_at }}</strong>
+         <h1>{{ post.author }}</h1>
+         @@@@@@@@@@@@@@@@@@@@@@@@@@@
+          <h3>{{ post.category }}</h3>
+          $$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+          <h4>{{ post.published_date }}</h4>
+          --------------------------------------------------------------------
+          --------------------------------------------------------------------
         </h2>
       </div>
     {% endfor %}
+# block for pagination
+    <div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
   </body>
 </html>
