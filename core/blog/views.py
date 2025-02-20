@@ -3,6 +3,7 @@ from django.views.generic.base import TemplateView
 from .models import Post  # noqa: F401
 from django.shortcuts import redirect  # noqa: F401
 from django.views.generic.base import RedirectView  
+from django.views.generic.list import ListView
 from django.shortcuts import get_object_or_404
 
 
@@ -46,8 +47,18 @@ class RedirectToMaktab(RedirectView):  # noqa: F811
          print(post) 
          return super().get_redirect_url(*args, **kwargs)
          
-         
-         
+
+#from django.views.generic.list import ListView
+class PostList(ListView):
+    context_object_name = "posts"
+
+    #model = Post 
+    #queryset = Post.objects.all()
+    def get_queryset(self):
+        posts = Post.objects.filter(status=True)
+        #posts = Post.objects.filter(status=False)
+        return posts
+     
 
     
     
