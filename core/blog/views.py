@@ -3,9 +3,9 @@ from django.views.generic.base import TemplateView
 from .models import Post  # noqa: F401
 from django.shortcuts import redirect  # noqa: F401
 from django.views.generic.base import RedirectView 
- 
-from django.views.generic import ListView , DetailView
+from django.views.generic import ListView , DetailView, FormView
 from django.shortcuts import get_object_or_404
+from .forms import PostForm
 
 
 
@@ -74,8 +74,18 @@ class PostDetailView(DetailView):
         context["title"] = "Post Detail"
         return context     
 
-     
-
+#from django.views.generic.edit import FormView     
+class PostCreateView(FormView):
+    model = Post
+    template_name = "contact.html"
+    form_class = PostForm
+    success_url = "/blog/post/"
+    
+    def  form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+    
+    
     
     
 

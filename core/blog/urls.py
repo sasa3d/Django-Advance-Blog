@@ -13,6 +13,7 @@ urlpatterns = [
     path("cbv-index/", views.indexView.as_view(), name="cbv-index"),
     path("post/", views.PostListView.as_view(), name="post-list"), 
     path("post/<int:pk>/",views.PostDetailView.as_view(), name="post-detail"),
+    path("post/create/", views.PostCreateView.as_view(), name="post-create"),
 #  path(
 #         "go-to-maktabkhooneh/",
 #         RedirectView.as_view(url="https://www.maktabkhooneh.com/"),  # noqa: F821
