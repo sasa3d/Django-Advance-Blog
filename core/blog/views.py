@@ -2,8 +2,9 @@ from django.shortcuts import render  # noqa: F401
 from django.views.generic.base import TemplateView
 from .models import Post  # noqa: F401
 from django.shortcuts import redirect  # noqa: F401
-from django.views.generic.base import RedirectView  
-from django.views.generic.list import ListView
+from django.views.generic.base import RedirectView 
+ 
+from django.views.generic import ListView , DetailView
 from django.shortcuts import get_object_or_404
 
 
@@ -49,7 +50,7 @@ class RedirectToMaktab(RedirectView):  # noqa: F811
          
 
 #from django.views.generic.list import ListView
-class PostList(ListView):
+class PostListView(ListView):
     context_object_name = "posts"
 
     #model = Post 
@@ -61,6 +62,18 @@ class PostList(ListView):
     
     paginate_by = 2
     ordering = ["-created_at"]
+    
+#django.views.generic.detail import DetailView
+class PostDetailView(DetailView):
+    model = Post
+    # template_name = "blog/post_detail.html"
+    # context_object_name = "post"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Post Detail"
+        return context     
+
      
 
     
