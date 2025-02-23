@@ -17,11 +17,14 @@ class PostForm(forms.ModelForm):
     class Meta:
         """Meta definition for MODELNAME."""
         model = Post
-        #fields = '__all__'
-        fields = ['author','title', 'content', 'status','category','published_date']
+        #fields = ['author','title', 'content', 'status','category','published_date']
+        fields = ['title', 'content', 'status','category','published_date'] #author is not editable because it is automatically 
+                  # set to the current user when the form is saved 
+        
         verbose_name = 'MODELNAME'
         verbose_name_plural = 'MODELNAMEs'
 
     def __str__(self):
         """Unicode representation of MODELNAME."""
         pass
+

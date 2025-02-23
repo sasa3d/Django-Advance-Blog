@@ -88,9 +88,14 @@ class PostDetailView(DetailView):
 #from django.views.generic.edit import CreateView   
 class PostCreateView(CreateView):
     model = Post
-    fields = ["title", "content", "status", "author",
+    '''fields = ["title", "content", "status", "author",
               "category","published_date"]
+    '''
     form_class = PostForm
     success_url = "/blog/post/"
 
-
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        # form.object.author = self.request.user
+        return super().form_valid(form)
+    
