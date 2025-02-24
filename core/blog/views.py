@@ -6,6 +6,7 @@ from django.views.generic.base import RedirectView
 from django.views.generic import ListView , DetailView, FormView, CreateView # noqa: F401
 from django.views.generic import UpdateView  , DeleteView  
 #from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin  # noqa: F401
 
 from django.shortcuts import get_object_or_404
 from .forms import PostForm  # noqa: F401
@@ -52,8 +53,10 @@ class RedirectToMaktab(RedirectView):  # noqa: F811
          return super().get_redirect_url(*args, **kwargs)
          
 
+# Class based view (CBV) for show a list of posts
 #from django.views.generic.list import ListView
-class PostListView(ListView):
+#from django.contrib.auth.mixins import loginRequiredMixin
+class PostListView(LoginRequiredMixin, ListView):  # noqa: F821
     context_object_name = "posts"
 
     #model = Post 
@@ -64,10 +67,10 @@ class PostListView(ListView):
         return posts
     
     paginate_by = 2
-    ordering = ["-created_at"]
+    ordering = ["-id"]
     
 #django.views.generic.detail import DetailView
-class PostDetailView(DetailView):
+class PostDetailView(LoginRequiredMixin, DetailView):
     model = Post
     # template_name = "blog/post_detail.html"
     # context_object_name = "post"
@@ -89,7 +92,7 @@ class PostDetailView(DetailView):
         return super().form_valid(form) 
  """
 #from django.views.generic.edit import CreateView   
-class PostCreateView(CreateView):
+class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     '''fields = ["title", "content", "status", "author",
               "category","published_date"]
@@ -104,7 +107,7 @@ class PostCreateView(CreateView):
 
 
 # from django.views.generic.edit import UpdateView    
-class PostEditView(UpdateView):
+class PostEditView(LoginRequiredMixin, UpdateView):
     model = Post
     form_class = PostForm
     #template_name = "blog/post_edit.html"
@@ -112,7 +115,7 @@ class PostEditView(UpdateView):
     
 # from django.views.generic.edit import DeleteView
 #from django.urls import reverse_lazy
-class PostDeleteView(DeleteView):
+class PostDeleteView(LoginRequiredMixin, DeleteView):
     model = Post
     #success_url = reverse_lazy("author-list") 
     success_url = "/blog/post/"   
