@@ -3,7 +3,9 @@ from django.views.generic.base import TemplateView
 from .models import Post  # noqa: F401
 from django.shortcuts import redirect  # noqa: F401
 from django.views.generic.base import RedirectView 
-from django.views.generic import ListView , DetailView, FormView, CreateView  # noqa: F401
+from django.views.generic import ListView , DetailView, FormView, CreateView # noqa: F401
+from django.views.generic import UpdateView    
+
 from django.shortcuts import get_object_or_404
 from .forms import PostForm  # noqa: F401
 
@@ -98,4 +100,16 @@ class PostCreateView(CreateView):
         form.instance.author = self.request.user
         # form.object.author = self.request.user
         return super().form_valid(form)
+
+
+# from django.views.generic.edit import UpdateView    
+class PostEditView(UpdateView):
+    model = Post
+    form_class = PostForm
+    #template_name = "blog/post_edit.html"
+    success_url = "/blog/post/"
+    
+    
+    
+        
     
