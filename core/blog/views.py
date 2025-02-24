@@ -4,7 +4,8 @@ from .models import Post  # noqa: F401
 from django.shortcuts import redirect  # noqa: F401
 from django.views.generic.base import RedirectView 
 from django.views.generic import ListView , DetailView, FormView, CreateView # noqa: F401
-from django.views.generic import UpdateView    
+from django.views.generic import UpdateView  , DeleteView  
+#from django.urls import reverse_lazy
 
 from django.shortcuts import get_object_or_404
 from .forms import PostForm  # noqa: F401
@@ -108,6 +109,13 @@ class PostEditView(UpdateView):
     form_class = PostForm
     #template_name = "blog/post_edit.html"
     success_url = "/blog/post/"
+    
+# from django.views.generic.edit import DeleteView
+#from django.urls import reverse_lazy
+class PostDeleteView(DeleteView):
+    model = Post
+    #success_url = reverse_lazy("author-list") 
+    success_url = "/blog/post/"   
     
     
     
