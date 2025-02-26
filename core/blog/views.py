@@ -58,9 +58,12 @@ class RedirectToMaktab(RedirectView):  # noqa: F811
 #from django.contrib.auth.mixins import loginRequiredMixin
 class PostListView(PermissionRequiredMixin ,LoginRequiredMixin, ListView):  # noqa: F821
     context_object_name = "posts"
-
     #model = Post 
     #queryset = Post.objects.all()
+    permission_required = "blog.view_post"
+    # def get_permission_required(self):
+    #     # می‌توانید در اینجا تصمیم بگیرید که چه مجوزهایی لازم است
+    #     return ['blog.view_post']
     def get_queryset(self):
         posts = Post.objects.filter(status=True)
         #posts = Post.objects.filter(status=False)
@@ -74,7 +77,7 @@ class PostDetailView(PermissionRequiredMixin, LoginRequiredMixin, DetailView):
     model = Post
     # template_name = "blog/post_detail.html"
     # context_object_name = "post"
-    
+    permission_required = "blog.view_post"
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = "Post Detail"
@@ -97,6 +100,7 @@ class PostCreateView(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
     '''fields = ["title", "content", "status", "author",
               "category","published_date"]
     '''
+    permission_required = "blog.view_post"
     form_class = PostForm
     success_url = "/blog/post/"
 
@@ -110,6 +114,7 @@ class PostCreateView(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
 class PostEditView(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
     model = Post
     form_class = PostForm
+    permission_required = "blog.view_post"
     #template_name = "blog/post_edit.html"
     success_url = "/blog/post/"
     
@@ -118,6 +123,7 @@ class PostEditView(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
 class PostDeleteView(PermissionRequiredMixin,LoginRequiredMixin, DeleteView):
     model = Post
     #success_url = reverse_lazy("author-list") 
+    permission_required = "blog.view_post"
     success_url = "/blog/post/"   
     
     
