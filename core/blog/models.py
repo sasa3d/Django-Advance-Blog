@@ -2,7 +2,7 @@ from django.db import models  # type: ignore
 
 # {"conversationId":"1929b946-2861-42a8-aeb3-faf5a0dfa05d","source":"instruct"}
 # from django.contrib.auth.models import User
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
 #from accounts.models import Profile   جهت جلوگیری از لوپ غلط در همزمانی ایمپورت کردن دو مدل از دو اپ درون یکدیگر 
 

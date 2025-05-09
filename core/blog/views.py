@@ -1,26 +1,17 @@
-from django.shortcuts import render  # noqa: F401
-from django.views.generic.base import TemplateView
+from django.shortcuts import render  # type: ignore # noqa: F401
+from django.views.generic.base import TemplateView # type: ignore
 from .models import Post  # noqa: F401
-from django.shortcuts import redirect  # noqa: F401
-from django.views.generic.base import RedirectView 
-from django.views.generic import ListView , DetailView, FormView, CreateView # noqa: F401
-from django.views.generic import UpdateView  , DeleteView  
+from django.shortcuts import redirect  # type: ignore # noqa: F401
+from django.views.generic.base import RedirectView  # type: ignore
+from django.views.generic import ListView , DetailView, FormView, CreateView # type: ignore # noqa: F401
+from django.views.generic import UpdateView  , DeleteView   # type: ignore
 #from django.urls import reverse_lazy
-from django.contrib.auth.mixins import LoginRequiredMixin , PermissionRequiredMixin # noqa: F401
+from django.contrib.auth.mixins import LoginRequiredMixin , PermissionRequiredMixin # type: ignore # noqa: F401
 
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404 # type: ignore
 from .forms import PostForm  # noqa: F401
 
 
-
-# Function based view (FBV) for show a template indexView
-""" def indexView(request):
-    ''' this is a function based view to show the index page'''
-    title="FBV_Index"
-    context={ "title":title }
-       
-    return render(request, 'index.html', context) 
-"""
 
 #from django.views.generic.base import TemplateView
 class indexView(TemplateView):  # noqa: F811
