@@ -11,8 +11,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin , PermissionRequiredMi
 from django.shortcuts import get_object_or_404 # type: ignore
 from .forms import PostForm  # noqa: F401
 
-
-
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+# type: ignore
 #from django.views.generic.base import TemplateView
 class indexView(TemplateView):  # noqa: F811
     ''' this is a class based view to show the index page'''
@@ -116,8 +117,12 @@ class PostDeleteView(PermissionRequiredMixin,LoginRequiredMixin, DeleteView):
     #success_url = reverse_lazy("author-list") 
     permission_required = "blog.view_post"
     success_url = "/blog/post/"   
+
+from django.http import HttpResponse  # type: ignore  # noqa: E402, F401
+@api_view()  # type: ignore  # noqa: F821
+def api_post_list_view(request):
+    ''' this is a function based view to show the list of posts in api format'''
     
-    
-    
-        
-    
+    return Response('OK')
+
+
