@@ -7,7 +7,8 @@ from . import views
 app_name = 'blog.api.v1.urls'
 
 urlpatterns = [
-    path('post/',views.postlist, name='post-list'),
+    path('post/',views.postList, name='post-list'),
+    path('post/<int:pk>/',views.postDetail, name='post-detail'),
    
 ]
 
