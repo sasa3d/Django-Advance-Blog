@@ -22,5 +22,5 @@ def postDetail(request, pk):
         request: The HTTP request object.
         pk: The primary key of the post.
     """
-    return  Response(pk)
+    return  Response(data)
     #return Response("Post ID: {}".format(pk))
