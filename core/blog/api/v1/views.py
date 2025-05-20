@@ -15,7 +15,16 @@ def postList(request):
     """
     Handles the request to print OK.
     """
-    return Response("OK")
+    #posts=Post.objects.all() 
+    posts = Post.objects.filter(status=True)
+    serializer = PostSerializer(posts, many=True) 
+    """ 
+    many=True means that we have more than one object
+    for example, if we have 10 posts, we need to set many=True
+    because we have 10 posts and we want to serialize all of them.
+    """
+  
+    return Response(serializer.data)
 
 # data={
 #     "id":7,
@@ -38,6 +47,6 @@ def postDetail(request,id):
     # except Post.DoesNotExist:
     #     # return Response({"Detail": "error_404(Post Does Not Exist) = Post not found"}, status=404)
     #     return Response({"Detail": "error_404(Post Does Not Exist) = Post not found"}, status=status.HTTP_404_NOT_FOUND)
-    post = get_object_or_404(Post, pk=id)
+    post = get_object_or_404(Post, pk=id, status=True)
     serializer = PostSerializer(post)
     return Response(serializer.data)
