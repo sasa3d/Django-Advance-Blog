@@ -51,9 +51,14 @@ def postList(request):
 
 
 """
-Handles the request to update a post by its ID.
+@api_view(["GET","PUT","DELETE"])
+Handles the API requests to update or remove a post by its ID.
+Args:
+    GET: retrieves the post with the given ID.
+    PUT: update or editing the post with the provided data and the given ID.
+    DELETE: deletes the post with the given ID.
 """
-@api_view(["GET","PUT"])
+@api_view(["GET","PUT","DELETE"])
 def postDetail(request,id):
     """
     Handles the request to get a post by its ID.
@@ -71,4 +76,6 @@ def postDetail(request,id):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
-        
+    elif request.method == "DELETE":
+        post.delete()
+        return Response({"Details": "Item removed successfully"}, status=status.HTTP_204_NO_CONTENT)
