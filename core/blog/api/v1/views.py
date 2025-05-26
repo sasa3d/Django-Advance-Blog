@@ -10,6 +10,25 @@ from ...models import Post  # noqa: E402, F401
 from rest_framework import status  # noqa: E402, F401
 from django.shortcuts import get_object_or_404  # noqa: E402, F401
 
+"""
+@api_view(["GET","POST"])
+def postList(request):
+    if request.method == "GET": 
+    .
+    .
+    .
+    Handles the requests to list all posts or create a new post.
+
+    GET:
+        Retrieves a list of all posts with status=True.
+        Returns serialized data of the posts.
+
+    POST:
+        Creates a new post with the provided data.
+        Validates the data using PostSerializer.
+        Saves the post if the data is valid and returns the serialized data.
+        Returns an error response if the data is invalid.
+    """
 @api_view(["GET","POST"])
 def postList(request):
     if request.method == "GET": 
@@ -24,40 +43,32 @@ def postList(request):
         return Response(serializer.data)
     elif request.method == "POST":
         serializer = PostSerializer(data=request.data)
-        # if serializer.is_valid():
-        #     serializer.save()
-        #     # serializer.save() will save the data to the database
-        #     return Response(serializer.data)
-        # else:
-        #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        # return Response("OK ITS VALID POST METHOD")
-        # return Response(request.data)
+       
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
         
 
-# data={
-#     "id":7,
-#     "title":"SaberSASA_SORNA of title",    
-#     "content":"saber_Modirian of content",
-#     }
 
-@api_view()
+"""
+Handles the request to update a post by its ID.
+"""
+@api_view(["GET","PUT"])
 def postDetail(request,id):
     """
     Handles the request to get a post by its ID.
     Args:
         request: The HTTP request object.
         pk: The primary key of the post.
-    """
-    # try:
-    #     post = Post.objects.get(pk=id)
-    #     serializer = PostSerializer(post)
-    #     return Response(serializer.data)
-    # except Post.DoesNotExist:
-    #     # return Response({"Detail": "error_404(Post Does Not Exist) = Post not found"}, status=404)
-    #     return Response({"Detail": "error_404(Post Does Not Exist) = Post not found"}, status=status.HTTP_404_NOT_FOUND)
+"""
     post = get_object_or_404(Post, pk=id, status=True)
-    serializer = PostSerializer(post)
-    return Response(serializer.data)
+    if request.method == "GET":
+        
+        serializer = PostSerializer(post)
+        return Response(serializer.data)
+    elif request.method == "PUT":
+        serializer = PostSerializer(post,data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+        
