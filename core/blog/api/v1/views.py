@@ -10,21 +10,32 @@ from ...models import Post  # noqa: E402, F401
 from rest_framework import status  # noqa: E402, F401
 from django.shortcuts import get_object_or_404  # noqa: E402, F401
 
-@api_view()
+@api_view(["GET","POST"])
 def postList(request):
-    """
-    Handles the request to print OK.
-    """
-    #posts=Post.objects.all() 
-    posts = Post.objects.filter(status=True)
-    serializer = PostSerializer(posts, many=True) 
-    """ 
-    many=True means that we have more than one object
-    for example, if we have 10 posts, we need to set many=True
-    because we have 10 posts and we want to serialize all of them.
-    """
-  
-    return Response(serializer.data)
+    if request.method == "GET": 
+        posts = Post.objects.filter(status=True)
+        serializer = PostSerializer(posts, many=True) 
+        """ 
+        many=True means that we have more than one object
+        for example, if we have 10 posts, we need to set many=True
+        because we have 10 posts and we want to serialize all of them.
+        """
+    
+        return Response(serializer.data)
+    elif request.method == "POST":
+        serializer = PostSerializer(data=request.data)
+        # if serializer.is_valid():
+        #     serializer.save()
+        #     # serializer.save() will save the data to the database
+        #     return Response(serializer.data)
+        # else:
+        #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # return Response("OK ITS VALID POST METHOD")
+        # return Response(request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
 
 # data={
 #     "id":7,

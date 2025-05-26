@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ...models import Post
+from ...models import Post  # noqa: F401
 
 # class PostSerializer(serializers.Serializer): # نام کلاس == Serializerاسم مدل + کلمه ی 
 #     id = serializers.IntegerField()
