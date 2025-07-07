@@ -1,4 +1,5 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view , permission_classes
+from rest_framework.permissions import IsAuthenticatedOrReadOnly , IsAdminUser  # noqa: F401
 from rest_framework.response import Response
 from .serializers import PostSerializer  #  noqa: F401 
 """ منظور همین فولدر که در فایل serializers.py هستش"""
@@ -30,6 +31,8 @@ def postList(request):
         Returns an error response if the data is invalid.
     """
 @api_view(["GET","POST"])
+@permission_classes([IsAdminUser])
+#@permission_classes([IsAuthenticatedOrReadOnly])# Only authenticated users can access this view  قرار بگیرد وگرنه کار نمیکند @api_view(["GET","POST"])و حتما باید بعداز 
 def postList(request):
     if request.method == "GET": 
         posts = Post.objects.filter(status=True)
