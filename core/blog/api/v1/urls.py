@@ -4,10 +4,11 @@ from . import views
 
 
 
-app_name = 'blog.api.v1.urls'
+app_name = 'v1.urls'
 
 urlpatterns = [
-    path('post/',views.postList, name='post-list'),
+    # path('post/',views.postList, name='post-list'),
+    path('post/', views.PostListView.as_view(), name='post-list'),
     path('post/<int:id>/',views.postDetail, name='post-detail'),
 
    
