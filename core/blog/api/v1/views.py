@@ -67,6 +67,8 @@ class PostListView(APIView):
     Methods:    
    
     """ 
+    permission_classes = [IsAuthenticated]  # noqa: F811
+    serializer_class = PostSerializer
     def get(self, request):
         """
         Retrieves a list of all posts with status=True.
