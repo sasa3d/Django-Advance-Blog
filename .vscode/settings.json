@@ -138,7 +138,7 @@
         {
             "scope": "entity.name.function.class",
             "settings": {
-                "foreground": "#f0a8deff" // Purple for class methods
+                "foreground": "#FFC0CB" // Pink (گلبهی)
             }
         } ,  {
             "scope": [
@@ -147,12 +147,25 @@
                 "variable.parameter"
             ],
             "settings": {
-                "foreground": "#4682B4" // Steel Blue (آبی نفتی)
+                "foreground": "#bb97f0" // Steel Blue (آبی نفتی)
             }
         }
 
           ,  {
                 "scope": "variable.other.readwrite.python", // Scope متغیرهای محلی در پایتون
+                "settings": {
+                    "foreground": "#4682B4" // Steel Blue (آبی نفتی)
+                }
+            }
+
+            ,
+
+             {
+                "scope": [
+                    "punctuation.definition.arguments.begin.python",
+                    "punctuation.definition.arguments.end.python", // اضافه کردن انتهای آرگومان‌ها هم برای اطمینان
+                    "punctuation.separator.arguments.python" // جداکننده آرگومان‌ها (مثل کاما)
+                ],
                 "settings": {
                     "foreground": "#4682B4" // Steel Blue (آبی نفتی)
                 }
@@ -249,7 +262,17 @@
                 "foreground": "#00CED1", // DarkTurquoise for 'this' and 'super'
                 "fontStyle": "bold"
             }
-        }
+        },
+         // ... ruleهای قبلی شما ...
+            {
+                "scope": [
+                    "meta.function-call.generic.python",
+                    "meta.function-call.python"
+                ],
+                "settings": {
+                    "foreground": "#4682B4" // Steel Blue (آبی نفتی)
+                }
+            }
     ]
 },
     "editor.semanticTokenColorCustomizations": {
@@ -286,12 +309,4 @@
         "reportOptionalCall": "none",
         "reportGeneralTypeIssues": "none"
     
-    },
-    "python.languageServer": "Pylance",
-    "window.zoomLevel": 1,
-    "editor.fontSize": 14,
-    
-    }
-
-
- 
+    }}
