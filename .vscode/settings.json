@@ -53,5 +53,245 @@
         "نیازمندیهای",
         "همان",
         "هنگام"
+    ],
+   "editor.tokenColorCustomizations": {
+    "textMateRules": [
+        {
+            "scope": "entity.name.type.class",
+            "settings": {
+                "foreground": "#FFFF00" // This is yellow
+            }
+        },
+        {
+            "scope": "entity.name.type.class.body",
+            "settings": {
+                "foreground": "#ff9500" // This is yellow
+            }
+        },
+        {
+            "scope": "entity.name.type",
+            "settings": {
+                "foreground": "#FFFF00" // This is yellow
+            }
+        },
+        {
+            "scope": "entity.name.type.class.python",
+            "settings": {
+                "foreground": "#ff00bb" // This is yellow
+            }
+        },
+        {
+            "scope": "entity.name.type.module",
+            "settings": {
+                "foreground": "#00c3ff" // This is yellow
+            }
+        },
+        {
+            "scope": "entity.name.type.namespace",
+            "settings": {
+                "foreground": "#00ff1a" // This is yellow
+            }
+        },
+        {
+            "scope": "entity.name.type.parameter",
+            "settings": {
+                "foreground": "#ff9500" // This is yellow
+            }
+        },
+        {
+            "scope": "entity.name.type.property",
+            "settings": {
+                "foreground": "#0022ff" // This is yellow
+            }
+        },
+        {
+            "scope": "entity.name.function",
+            "settings": {
+                "foreground": "#a8f2edf0" // Purple for methods/functions
+            }
+        }
+        ,
+        {
+            "scope": "function.argument",
+            "settings": {
+                "foreground": "#f2dea8f0" // Purple for methods/functions
+            }
+        },
+        {
+            "scope": "entity.name.function.decorator",
+            "settings": {
+                "foreground": "#a8f2acde" // Purple for decorators
+            }
+        },
+        {
+            "scope": "entity.name.function.method.instance.python",
+            "settings": {
+                "foreground": "#a8f2acde" // Purple for methods
+            }
+        },
+        {
+            "scope": "entity.name.function.static",
+            "settings": {
+                "foreground": "#f0a8f2de" // Purple for static methods
+            }
+        },
+        {
+            "scope": "entity.name.function.class",
+            "settings": {
+                "foreground": "#f0a8deff" // Purple for class methods
+            }
+        } ,  {
+            "scope": [
+                "variable.other",
+                "variable.other.property",
+                "variable.parameter"
+            ],
+            "settings": {
+                "foreground": "#4682B4" // Steel Blue (آبی نفتی)
+            }
+        }
+
+          ,  {
+                "scope": "variable.other.readwrite.python", // Scope متغیرهای محلی در پایتون
+                "settings": {
+                    "foreground": "#4682B4" // Steel Blue (آبی نفتی)
+                }
+            }
+
+    
+,
+
+{
+            "scope": [
+                "variable.other.readwrite",
+                "variable.other.local",
+                "variable.other.local.python"
+            ],
+            "settings": {
+                "foreground": "#4682B4" // Steel Blue (آبی نفتی)
+            }
+        },
+        {
+            "scope": [
+                "variable.other.readonly",
+                "variable.other.constant"
+            ],
+            "settings": {
+                "foreground": "#f069f5" // Tomato for constants
+            }
+        }
+,
+ {
+            "scope": [
+                "keyword",
+                "keyword.control",
+                "storage.type", // For things like 'class', 'def' in some languages
+                "storage.modifier",
+                "punctuation.accessor" // For '.' in some contexts, sometimes classified as keyword-like
+            ],
+            "settings": {
+                "foreground": "#cee55c" // Light Purple for keywords
+            }
+
+},
+{
+            "scope": [
+                "string",
+                "string.quoted",
+                "string.quoted.double",
+                "string.quoted.single",
+                "string.template",
+                "string.interpolated"
+            ],
+            "settings": {
+                "foreground": "#c9f1c9" // Light Green for strings
+            }
+        },
+        {
+            "scope": [
+                "comment",
+                "comment.block",
+                "comment.line",
+                "comment.documentation"
+            ],
+            "settings": {
+                "foreground": "#6b6767", // Gray for comments
+                "fontStyle": "italic"
+            }
+        },
+        {
+            "scope": [
+                "constant.numeric",
+                "constant.language.boolean",
+                "constant.language.null",
+                "constant.character.escape"
+            ],
+            "settings": {
+                "foreground": "#5900ff" // OrangeRed for numbers and constants
+            }
+        },
+        {
+            "scope": [
+                "entity.name.type.class",
+                "entity.name.type.interface",
+                "entity.name.type.enum"
+            ],
+            "settings": {
+                "foreground": "#ff00bf" // Yellow for class names and types
+            }
+        },
+        {
+            "scope": [
+                "variable.language.this", // 'this' keyword in many languages
+                "variable.language.super" // 'super' keyword in many languages
+            ],
+            "settings": {
+                "foreground": "#00CED1", // DarkTurquoise for 'this' and 'super'
+                "fontStyle": "bold"
+            }
+        }
     ]
-}
+},
+    "editor.semanticTokenColorCustomizations": {
+        "enabled": true,
+        "rules": {
+            "variable": "#FFA500", // Orange for variables
+            "parameter": "#101ee5", // Orange for parameters
+            "function": "#a8f2edf0", // Purple for functions
+            "method": "#a8f2edf0", // Purple for methods
+            "class": "#FFFF00", // Yellow for classes
+            "interface": "#FFFF00", // Yellow for interfaces
+            "namespace": "#00ff1a", // Green for namespaces
+            "typeParameter": "#FFFF00", // Yellow for type parameters
+            "property": "#0022ff", // Blue for properties
+            "enumMember": "#FFFF00", // Yellow for enum members
+            "event": "#FFA500", // Orange for events
+            "keyword": "#cee55c", // Light Purple for keywords
+            "string": "#90ee90", // Light Green for strings
+            "number": "#ff4500", // OrangeRed for numbers
+            "comment": {
+                "foreground": "#808080", // Gray for comments
+                "fontStyle": "italic"
+            },
+            "decorator": "#a8f2acde" // Purple for decorators
+        }
+    },
+    "python.analysis.typeCheckingMode": "off",
+    "python.analysis.autoSearchPaths": true,
+    "python.analysis.useLibraryCodeForTypes": true,
+    "python.analysis.diagnosticSeverityOverrides": {
+        "reportMissingImports": "none",
+        "reportOptionalMemberAccess": "none",
+        "reportOptionalSubscript": "none",
+        "reportOptionalCall": "none",
+        "reportGeneralTypeIssues": "none"
+    
+    },
+    "python.languageServer": "Pylance",
+    "window.zoomLevel": 1,
+    "editor.fontSize": 14,
+    
+    }
+
+
+ 

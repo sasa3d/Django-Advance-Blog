@@ -131,3 +131,44 @@ def postDetail(request,id):
     elif request.method == "DELETE":
         post.delete()
         return Response({"Details": "Item removed successfully"}, status=status.HTTP_204_NO_CONTENT)
+
+
+class PostDetail(APIView):
+    """Handles the requests to retrieve, update, or delete a specific post and
+    provides the functionality to get a post by its ID, update it, or delete it by its ID 
+    and status=True and returns the serialized data of the post or a success message upon deletion.
+    getting details of a post and edit plus removing that post.
+   
+    Returns:
+        : Response: Serialized data of the post or a success message upon deletion.
+    """
+    permission_classes = [IsAuthenticatedOrReadOnly]  # noqa: F811
+    serializer_class = PostSerializer
+    
+    def get(self,request,id):
+        '''
+        Retrieves a specific post by its ID.
+        '''
+        post = get_object_or_404(Post,pk=id , status=True)
+        serializer = self.serializer_class(post)
+        return Response(serializer.data)
+        
+        
+    def put(self,request,id):
+        """
+        Edits a specific post by its ID.
+        """
+        
+        post = get_object_or_404(Post,pk=id , status=True)
+        serializer = self.serializer_class(post,data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)  
+     
+    def delete(self,request,id):
+        """
+        Deletes a specific post by its ID.
+        """
+        post = get_object_or_404(Post,pk=id , status=True)
+        post.delete()
+        return Response({"Details": "Item removed successfully"}, status=status.HTTP_204_NO_CONTENT)
