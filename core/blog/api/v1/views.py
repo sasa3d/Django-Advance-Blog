@@ -6,7 +6,7 @@ from .serializers import PostSerializer  #  noqa: F401
 
 from rest_framework.views import APIView  # noqa: E402, F401
 
-from rest_framework.generics import GenericAPIView  # noqa: E402  
+from rest_framework.generics import GenericAPIView , ListCreateAPIView  # noqa: E402, F401
 from rest_framework.mixins import ListModelMixin, CreateModelMixin, UpdateModelMixin, DestroyModelMixin  # noqa: E402, F401
 
 
@@ -19,7 +19,9 @@ from django.shortcuts import get_object_or_404  # noqa: E402, F401
 
 
     
-class PostListView(GenericAPIView , ListModelMixin, CreateModelMixin):
+# class PostListView(GenericAPIView , ListModelMixin, CreateModelMixin):
+class PostListView(ListCreateAPIView):
+
     """Handles the requests to retrieve a list of posts and create a new post."""
 
     permission_classes = [IsAuthenticatedOrReadOnly]  # noqa: F811
@@ -28,23 +30,23 @@ class PostListView(GenericAPIView , ListModelMixin, CreateModelMixin):
     def get_queryset(self): #qs
         return Post.objects.filter(status=True)
 
-    def get(self, request, *args , **kwargs):
-        """Handles the request to retrieve a list of posts."""
-        # posts = Post.objects.filter(status=True)
-        # qs = self.get_queryset()
-        # serializer = self.serializer_class(qs, many=True)
-        # return Response(serializer.data)
-        return self.list(request, *args , **kwargs)
+    # def get(self, request, *args , **kwargs):
+    #     """Handles the request to retrieve a list of posts."""
+    #     # posts = Post.objects.filter(status=True)
+    #     # qs = self.get_queryset()
+    #     # serializer = self.serializer_class(qs, many=True)
+    #     # return Response(serializer.data)
+    #     return self.list(request, *args , **kwargs)
     
 
    
-    def post(self, request, *args, **kwargs):
-        """Handles the request to create a new post."""
-        # serializer = self.serializer_class(data=request.data)
-        # serializer.is_valid(raise_exception=True)
-        # serializer.save()
-        # return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return self.create(request, *args, **kwargs)
+    # def post(self, request, *args, **kwargs):
+    #     """Handles the request to create a new post."""
+    #     # serializer = self.serializer_class(data=request.data)
+    #     # serializer.is_valid(raise_exception=True)
+    #     # serializer.save()
+    #     # return Response(serializer.data, status=status.HTTP_201_CREATED)
+    #     return self.create(request, *args, **kwargs)
 
 @api_view(["GET","PUT","DELETE"])
 def PostDetail(request,id):
