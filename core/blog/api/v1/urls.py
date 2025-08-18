@@ -9,7 +9,7 @@ app_name = 'v1.urls'
 urlpatterns = [
     path('post/',views.PostListView.as_view(), name='post-list'),
 
-    path('post/<int:id>/',views.PostDetail, name='post-detail'),
+    path('post/<int:id>/',views.PostDetail.as_view(), name='post-detail'), #= pk=id
     # path('post/', views.PostListView.as_view(), name='post-list'),
     # path('post/<int:id>/',views.PostDetail.as_view(), name='post-detail'),
 
