@@ -3,14 +3,14 @@ from rest_framework.response import Response
 from .serializers import PostSerializer   
 """ منظور همین فولدر که در فایل serializers.py هستش"""
 
-from ...models import Post 
+from ...models import Post  # noqa: E402
 """ منظور همین فولدر که در فایل models.py هستش و ارجاع به سه فولدرهای تو در توی بالاتر"""
 
-from rest_framework import status 
-from django.shortcuts import get_object_or_404  
+from rest_framework import status  # noqa: E402
+from django.shortcuts import get_object_or_404  # noqa: E402
 
 from rest_framework.generics import  ListCreateAPIView  , RetrieveUpdateDestroyAPIView  # noqa: E402
-from rest_framework.viewsets import ViewSet
+from rest_framework.viewsets import ViewSet  # noqa: E402
 
 
 # class PostListView(GenericAPIView , ListModelMixin, CreateModelMixin):
