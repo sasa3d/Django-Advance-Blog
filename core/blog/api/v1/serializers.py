@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ...models import Post  # noqa: F401
+from ...models import Post , Category # noqa: F401
 
 # class PostSerializer(serializers.Serializer): # نام کلاس == Serializerاسم مدل + کلمه ی 
 #     id = serializers.IntegerField()
@@ -11,4 +11,9 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         # fields = '__all__'  # This will include all fields in the model:        # fields = ['id', 'title', 'content', 'status', 'created_at', 'updated_at', 'publish_date', 'author', 'category']
-        fields = ['id', 'title', 'status', 'created_date', 'updated_date', 'published_date', 'author', 'category']
+        fields = ['id', 'title', 'content', 'status', 'created_date', 'updated_date', 'published_date', 'author', 'category']
+        
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['id', 'name']
