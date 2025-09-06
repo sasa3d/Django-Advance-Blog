@@ -2,7 +2,6 @@ from django.urls import path  # noqa: F401
 from . import views  # noqa: F401
 # type: ignore  # noqa: F401
 from rest_framework.routers import DefaultRouter
-from rest_framework.documentation import include_docs_urls 
 
 app_name = 'v1.urls'
 
