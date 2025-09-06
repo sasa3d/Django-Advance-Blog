@@ -1,16 +1,16 @@
 from rest_framework.permissions import IsAuthenticated , IsAuthenticatedOrReadOnly , IsAdminUser  # noqa: F401
-from rest_framework.response import Response 
+from rest_framework.response import Response  # noqa: F401
 from .serializers import PostSerializer   , CategorySerializer
 """ منظور همین فولدر که در فایل serializers.py هستش"""
 
 from ...models import Post, Category # noqa: E402
 """ منظور همین فولدر که در فایل models.py هستش و ارجاع به سه فولدرهای تو در توی بالاتر"""
 
-from rest_framework import status  # noqa: E402
-from django.shortcuts import get_object_or_404  # noqa: E402
+from rest_framework import status  # noqa: E402, F401
+from django.shortcuts import get_object_or_404  # noqa: E402, F401
 
 from rest_framework.generics import  ListCreateAPIView  , RetrieveUpdateDestroyAPIView  # noqa: E402
-from rest_framework.viewsets import ViewSet , ModelViewSet # noqa: E402
+from rest_framework.viewsets import ViewSet , ModelViewSet  # noqa: E402, F401
 
 
 # class PostListView(GenericAPIView , ListModelMixin, CreateModelMixin):

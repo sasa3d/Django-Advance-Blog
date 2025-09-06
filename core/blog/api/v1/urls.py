@@ -1,7 +1,8 @@
-from django.urls import path  
+from django.urls import path  # noqa: F401
 from . import views  # noqa: F401
 # type: ignore  # noqa: F401
 from rest_framework.routers import DefaultRouter
+from rest_framework.documentation import include_docs_urls 
 
 app_name = 'v1.urls'
 
@@ -9,7 +10,9 @@ app_name = 'v1.urls'
 router = DefaultRouter()
 router.register('post', views.PostModelViewSet, basename='post')
 router.register('category', views.CategoryModelViewSet, basename='category')
+
 urlpatterns = router.urls
+
 
 
 
