@@ -1,12 +1,15 @@
 from rest_framework import serializers
 from ...models import Post , Category # noqa: F401
 
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['id', 'name']
+
 # class PostSerializer(serializers.Serializer): # نام کلاس == Serializerاسم مدل + کلمه ی 
 #     id = serializers.IntegerField()
 #     title = serializers.CharField(max_length=255)
-    
-    
-
+ 
 class PostSerializer(serializers.ModelSerializer):
     snippet = serializers.ReadOnlyField(source='get_snippet')
    
@@ -19,6 +22,12 @@ class PostSerializer(serializers.ModelSerializer):
     
     # content = serializers.ReadOnlyField()
     # content = serializers.CharField(read_only=True)
+    
+    # category = serializers.SlugRelatedField(
+    #     queryset=Category.objects.all(),
+    #     slug_field='name', many=False
+    # )
+
     class Meta:
         model = Post
         # fields = '__all__'  # This will include all fields in the model:        # fields = ['id', 'title', 'content', 'status', 'created_at', 'updated_at', 'publish_date', 'author', 'category']
@@ -38,9 +47,13 @@ class PostSerializer(serializers.ModelSerializer):
     def get_abslt_url(self, obj):
         return obj.get_absolute_api_url()
     
-class CategorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Category
-        fields = ['id', 'name']
+    def to_representation(self, instance): 
+        """برای مجزا کردن داده ها در خروجی
+        (زمانیکه یک تک آیتم بهت میدم یک چیز نمایش بده و زمانیکه یک لیست بهت میدم یک چیز دیگه ای بهم نمایش بده)"""
+        representation = super().to_representation(instance)
+        representation['snippet'] = instance.get_snippet()
+        return representation
+    
+
 
    
