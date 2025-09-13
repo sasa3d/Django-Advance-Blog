@@ -10,9 +10,7 @@ app_name = "blog"
 urlpatterns = [ 
     
      path("fbv-index/", views.indexView.as_view(), name="fbv-index"),  # CBV با استفاده از as_view()
-   
-        # اگر FBV استفاده شود:
-        # path("fbv-index/", views.indexView, name="fbv-index"),
+    # path("index/", TemplateView.as_view(template_name="blog/index.html"), name="index"),
 
     path("cbv-index/", views.indexView.as_view(), name="cbv-index"),
 
@@ -21,16 +19,6 @@ urlpatterns = [
     path("post/create/", views.PostCreateView.as_view(), name="post-create"),
     path("post/<int:pk>/edit/", views.PostEditView.as_view(), name="post-edit"),
     path("post/<int:pk>/delete/", views.PostDeleteView.as_view(), name="post-delete"),
-    
-    
-    
-#  path(
-#         "go-to-maktabkhooneh/",
-#         RedirectView.as_view(url="https://www.maktabkhooneh.com/"),  # noqa: F821
-#         name="go-to-maktabkhooneh",
-#     ),         
-#path("go-to-index/", RedirectView.as_view(pattern_name="blog:cbv-index"), name="redirect-to-cbv_index"),
-#path("go-to-maktab/<int:pk>/", views.RedirectToMaktab.as_view(), name="redirect-to-maktabkhooneh"),
     path("api/v1/", include("blog.api.v1.urls")),
 ]
 

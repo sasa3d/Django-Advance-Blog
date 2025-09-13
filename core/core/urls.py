@@ -25,7 +25,7 @@ from rest_framework.documentation import include_docs_urls
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('blog/', include('blog.urls')),
+    path('blog/', include('blog.urls'),),
     
     # for using the browsable API you'll probably also want to add REST framework's login and logout views. 
     path('api-auth/', include('rest_framework.urls')),

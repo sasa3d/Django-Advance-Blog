@@ -3,7 +3,8 @@ from . import views  # noqa: F401
 # type: ignore  # noqa: F401
 from rest_framework.routers import DefaultRouter
 
-app_name = 'v1.urls'
+# app_name = 'v1.urls'
+app_name = 'api-v1'
 
 
 router = DefaultRouter()
