@@ -47,13 +47,25 @@ class PostSerializer(serializers.ModelSerializer):
     def get_abslt_url(self, obj):
         return obj.get_absolute_api_url()
     
-    def to_representation(self, instance): 
-        """برای مجزا کردن داده ها در خروجی
-        (زمانیکه یک تک آیتم بهت میدم یک چیز نمایش بده و زمانیکه یک لیست بهت میدم یک چیز دیگه ای بهم نمایش بده)"""
-        representation = super().to_representation(instance)
-        representation['snippet'] = instance.get_snippet()
-        return representation
-    
 
+        """
+        Overwrites the to_representation method of the ModelSerializer to include the 
+        of the post in the representation. The  is obtained by calling the 
+        method of the Post model.
+        Args:
+            instance (Post): The Post instance to be serialized.
+        Returns:
+            dict: The serialized representation of the Post instance.
+            "برای مجزا کردن داده ها در خروجی
+        (زمانیکه یک تک آیتم بهت میدم یک چیز نمایش بده و زمانیکه یک لیست بهت میدم یک چیز دیگه ای بهم نمایش بده)
+          """
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        # rep['name'] = 'alli'
+        # rep['category'] = 'alli@example.com'
+        rep['category'] = CategorySerializer(instance.category).data
+        rep.pop('snippet', None)  # Remove 'snippet' field if it exists
+        return rep
+            
 
    
