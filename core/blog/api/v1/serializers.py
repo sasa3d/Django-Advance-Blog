@@ -61,6 +61,20 @@ class PostSerializer(serializers.ModelSerializer):
           """
     def to_representation(self, instance):
         rep = super().to_representation(instance)
+        request = self.context.get('request')#در صورتی که لیست ارسال شود
+        rep['state'] = "list-Item"
+
+        if request.parser_context.get('kwargs').get('pk'):#در صورتی که تک آیتم ارسال شود
+            rep['state'] = "single-Item"
+
+        # rep['author'] = {
+        #     'id': instance.author.id,
+        #     # 'email': instance.author.email,
+        #     # 'username': instance.author.username,
+        #     # 'profile_url': request.build_absolute_uri(instance.author.get_absolute_api_url())
+        # }
+        
+        
         # rep['name'] = 'alli'
         # rep['category'] = 'alli@example.com'
         rep['category'] = CategorySerializer(instance.category).data
