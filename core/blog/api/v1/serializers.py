@@ -12,22 +12,12 @@ class CategorySerializer(serializers.ModelSerializer):
  
 class PostSerializer(serializers.ModelSerializer):
     snippet = serializers.ReadOnlyField(source='get_snippet')
-   
     reltv_url = serializers.ReadOnlyField(source='get_absolute_api_url', read_only=True)
-   
     absolute_url = serializers.SerializerMethodField(method_name='get_abs_url')
-    
     abslt_url = serializers.HyperlinkedIdentityField(
         view_name='blog:api-v1:post-detail', read_only=True)
     
-    # content = serializers.ReadOnlyField()
-    # content = serializers.CharField(read_only=True)
-    
-    # category = serializers.SlugRelatedField(
-    #     queryset=Category.objects.all(),
-    #     slug_field='name', many=False
-    # )
-
+  
     class Meta:
         model = Post
         # fields = '__all__'  # This will include all fields in the model:        # fields = ['id', 'title', 'content', 'status', 'created_at', 'updated_at', 'publish_date', 'author', 'category']
@@ -48,29 +38,29 @@ class PostSerializer(serializers.ModelSerializer):
         return obj.get_absolute_api_url()
     
 
-        """
-        Overwrites the to_representation method of the ModelSerializer to include the 
-        of the post in the representation. The  is obtained by calling the 
-        method of the Post model.
-        Args:
-            instance (Post): The Post instance to be serialized.
-        Returns:
-            dict: The serialized representation of the Post instance.
-            "برای مجزا کردن داده ها در خروجی
-        (زمانیکه یک تک آیتم بهت میدم یک چیز نمایش بده و زمانیکه یک لیست بهت میدم یک چیز دیگه ای بهم نمایش بده)
-          """
     def to_representation(self, instance):
+        """ برای مجزا کردن داده ها در خروجی
+        (زمانیکه یک تک آیتم بهت میدم یک چیز نمایش بده و زمانیکه یک لیست بهت میدم یک چیز دیگه ای بهم نمایش بده)
+        
+        This method is used to override the default to_representation method of the serializer.
+        It removes the 'abslt_url', 'reltv_url', 'absolute_url', and 'snippet' fields from the response
+        when a single post is requested, and the 'content' field when a list of posts is requested.
+        It also adds a 'category' field to the response, which contains the serialized data of the post's category.
+        """
         rep = super().to_representation(instance)
-        request = self.context.get('request')#در صورتی که لیست ارسال شود
-        if request.parser_context.get('kwargs').get('pk'):#در صورتی که تک آیتم ارسال شود
+        rqst = self.context.get('request')#در صورتی که لیست ارسال شود request
+        if rqst.parser_context.get('kwargs').get('pk'):#در صورتی که تک آیتم ارسال شود
             rep.pop('abslt_url', None)
             rep.pop('reltv_url', None)
             rep.pop('absolute_url', None)
             rep.pop('snippet', None)
         else:
              rep.pop('content', None)#در صورتی که لیست ارسال شود
-
-        rep['category'] = CategorySerializer(instance.category).data
+       # TODO: check if the 'category' field exists in the response and remove it if it does
+       # TODO: The line `rep['category'] = CategorySerializer(instance.category, context={'request':
+       # TODO: rqst}).data` is creating a serialized representation of the category associated with the post
+       # TODO: instance.
+        rep['category'] = CategorySerializer(instance.category,context={'request': rqst}).data
         rep.pop('snippet', None)  # Remove 'snippet' field if it exists
         return rep
             
