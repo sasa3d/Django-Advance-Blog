@@ -31,7 +31,7 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         # fields = '__all__'  # This will include all fields in the model:        # fields = ['id', 'title', 'content', 'status', 'created_at', 'updated_at', 'publish_date', 'author', 'category']
-        fields = ['id', 'title', 'content','snippet' , 'status',
+        fields = ['id', 'title','image','content','snippet' , 'status',
                   'reltv_url','absolute_url', 'abslt_url',
                   'created_date', 'updated_date', 'published_date',
                   'author', 'category']
@@ -62,21 +62,14 @@ class PostSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         rep = super().to_representation(instance)
         request = self.context.get('request')#در صورتی که لیست ارسال شود
-        rep['state'] = "list-Item"
-
         if request.parser_context.get('kwargs').get('pk'):#در صورتی که تک آیتم ارسال شود
-            rep['state'] = "single-Item"
+            rep.pop('abslt_url', None)
+            rep.pop('reltv_url', None)
+            rep.pop('absolute_url', None)
+            rep.pop('snippet', None)
+        else:
+             rep.pop('content', None)#در صورتی که لیست ارسال شود
 
-        # rep['author'] = {
-        #     'id': instance.author.id,
-        #     # 'email': instance.author.email,
-        #     # 'username': instance.author.username,
-        #     # 'profile_url': request.build_absolute_uri(instance.author.get_absolute_api_url())
-        # }
-        
-        
-        # rep['name'] = 'alli'
-        # rep['category'] = 'alli@example.com'
         rep['category'] = CategorySerializer(instance.category).data
         rep.pop('snippet', None)  # Remove 'snippet' field if it exists
         return rep
