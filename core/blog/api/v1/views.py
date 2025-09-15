@@ -12,6 +12,8 @@ from django.shortcuts import get_object_or_404  # noqa: E402, F401
 from rest_framework.generics import  ListCreateAPIView  , RetrieveUpdateDestroyAPIView  # noqa: E402
 from rest_framework.viewsets import ViewSet , ModelViewSet  # noqa: E402, F401
 from .permissions import IsOwnerOrReadOnly  # noqa: E402, F401
+from django_filters.rest_framework import DjangoFilterBackend  # noqa: E402
+# from rest_framework import filters
 
 # class PostListView(GenericAPIView , ListModelMixin, CreateModelMixin):
 class PostListView(ListCreateAPIView):
@@ -40,9 +42,10 @@ class PostDetail(RetrieveUpdateDestroyAPIView):
 class PostModelViewSet(ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]  
     serializer_class = PostSerializer
-    queryset = Post.objects.filter(status=True) #== def get_queryset(self): 
-                                                #     return Post.objects.filter(status=True)
-
+    queryset = Post.objects.filter(status=True) #todo == def get_queryset(self):   return Post.objects.filter(status=True)
+    filter_backends = [DjangoFilterBackend] 
+    filterset_fields = ['category','author','status']                                          
+    
 
 class CategoryModelViewSet(ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
