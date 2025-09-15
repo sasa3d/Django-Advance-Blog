@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "accounts",
     "blog",
     "rest_framework",
+    'rest_framework_spectacular',
     'django_filters',
 ]
 
@@ -149,12 +150,10 @@ AUTH_USER_MODEL = "accounts.User"
 
 # restframework settings
 REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework_spectacular.openapi.AutoSchema', # این تنظیم صحیح است
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'], # این را هم اضافه کنید
+    # اگر لازم بود، می‌توانید permission_classes را هم اینجا اضافه کنید:
     # 'DEFAULT_PERMISSION_CLASSES': [
     #     'rest_framework.permissions.IsAuthenticated',
     # ]
-    
 }
-
-REST_FRAMEWORK = {
-        'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
-    }

@@ -13,7 +13,8 @@ from rest_framework.generics import  ListCreateAPIView  , RetrieveUpdateDestroyA
 from rest_framework.viewsets import ViewSet , ModelViewSet  # noqa: E402, F401
 from .permissions import IsOwnerOrReadOnly  # noqa: E402, F401
 from django_filters.rest_framework import DjangoFilterBackend  # noqa: E402
-from rest_framework.filters import SearchFilter
+from rest_framework.filters import SearchFilter , OrderingFilter  # noqa: E402, F401
+from .paginations import CustomBlogPostPagination  #  BlogPostPagination , noqa: E402, F401  # noqa: E402
 
 
 # class PostListView(GenericAPIView , ListModelMixin, CreateModelMixin):
@@ -44,9 +45,11 @@ class PostModelViewSet(ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]  
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=True) #todo == def get_queryset(self):   return Post.objects.filter(status=True)
-    filter_backends = [DjangoFilterBackend , SearchFilter] 
+    filter_backends = [DjangoFilterBackend , SearchFilter,OrderingFilter] 
     filterset_fields = ['category','author','status'] 
-    search_fields = ['title','content']                                         
+    search_fields = ['title','content']   
+    ordering_fields = ['published_date']  
+    pagination_class = CustomBlogPostPagination                                 
     
 
 class CategoryModelViewSet(ModelViewSet):
