@@ -11,7 +11,7 @@ from django.shortcuts import get_object_or_404  # noqa: E402, F401
 
 from rest_framework.generics import  ListCreateAPIView  , RetrieveUpdateDestroyAPIView  # noqa: E402
 from rest_framework.viewsets import ViewSet , ModelViewSet  # noqa: E402, F401
-
+from .permissions import IsOwnerOrReadOnly  # noqa: E402, F401
 
 # class PostListView(GenericAPIView , ListModelMixin, CreateModelMixin):
 class PostListView(ListCreateAPIView):
@@ -38,7 +38,7 @@ class PostDetail(RetrieveUpdateDestroyAPIView):
 # Example for ViewSet in CBV : 
 # class PostViewSet(ViewSet): 
 class PostModelViewSet(ModelViewSet):
-    permission_classes = [IsAuthenticatedOrReadOnly]  
+    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]  
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=True) #== def get_queryset(self): 
                                                 #     return Post.objects.filter(status=True)
