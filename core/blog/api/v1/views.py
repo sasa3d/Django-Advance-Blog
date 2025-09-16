@@ -27,6 +27,8 @@ class PostListView(ListCreateAPIView):
     
     def get_queryset(self): #qs
         return Post.objects.filter(status=True)
+    
+    # queryset = Post.objects.filter(status=True)  #todo == def get_queryset(self):   return Post.objects.filter(status=True)
 
 
 
@@ -46,8 +48,14 @@ class PostModelViewSet(ModelViewSet):
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=True) #todo == def get_queryset(self):   return Post.objects.filter(status=True)
     filter_backends = [DjangoFilterBackend , SearchFilter,OrderingFilter] 
-    filterset_fields = ['category','author','status'] 
-    search_fields = ['title','content']   
+    # filterset_fields = ['category','author','status'] 
+    filterset_fields = {
+                        'category':["exact" ,"in"],
+                        'author':["exact"],
+                        'status':["exact"]
+                        }
+    search_fields = ['title','content'] 
+    watch_fields = ['title','content']    #todo == watch_fields = ['title','content']
     ordering_fields = ['published_date']  
     pagination_class = CustomBlogPostPagination                                 
     
