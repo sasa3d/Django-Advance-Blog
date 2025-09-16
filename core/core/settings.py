@@ -52,7 +52,9 @@ INSTALLED_APPS = [
     "accounts",
     "blog",
     "rest_framework",
-    # 'rest_framework_spectacular',
+    'drf_spectacular', # این خط رو نگه دار، فقط همین!
+    # 'include_docs_urls',
+    # 'rest_framework_spectacular', # این خط رو پاک کن!
     'django_filters',
 ]
 
@@ -150,10 +152,15 @@ AUTH_USER_MODEL = "accounts.User"
 
 # restframework settings
 REST_FRAMEWORK = {
-    # 'DEFAULT_SCHEMA_CLASS': 'rest_framework_spectacular.openapi.AutoSchema', # این تنظیم صحیح است
-    # 'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'], # این را هم اضافه کنید
-    # اگر لازم بود، می‌توانید permission_classes را هم اینجا اضافه کنید:
-    # 'DEFAULT_PERMISSION_CLASSES': [
-    #     'rest_framework.permissions.IsAuthenticated',
-    # ]
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    # 'DEFAULT_VERSIONING_CLASS': 'drf_spectacular.versioning.SpectacularVersioning',
+    # اگر خواستید کلاس شمای دیگری را اضافه کنید، معمولا برای هر APIView به صورت جداگانه تعیین می‌شود
+    # یا با تغییر AutoSchema سفارشی سازی می‌شود، نه اینکه لیست باشد.
+    # به جای 'include_docs_urls.openapi.AutoSchema' احتمالاً منظورتان چیزی شبیه به این بوده:
+    # 'DEFAULT_SCHEMA_CLASS': 'path.to.your.custom.AutoSchema'
+    # اما به طور پیش‌فرض، drf-spectacular با AutoSchema خود به خوبی کار می‌کند.
 }

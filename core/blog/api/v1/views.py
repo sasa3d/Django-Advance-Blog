@@ -14,7 +14,7 @@ from rest_framework.viewsets import ViewSet , ModelViewSet  # noqa: E402, F401
 from .permissions import IsOwnerOrReadOnly  # noqa: E402, F401
 from django_filters.rest_framework import DjangoFilterBackend  # noqa: E402
 from rest_framework.filters import SearchFilter , OrderingFilter  # noqa: E402, F401
-from .paginations import CustomBlogPostPagination  #  BlogPostPagination , noqa: E402, F401  # noqa: E402
+from .paginations import CustomBlogPostPagination # noqa: E402, F401
 
 
 # class PostListView(GenericAPIView , ListModelMixin, CreateModelMixin):
