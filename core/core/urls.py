@@ -6,12 +6,13 @@ from django.conf.urls.static import static
 # from rest_framework.documentation import include_docs_urls  # این خط رو حذف کنید چون لازم نیست  # noqa: F401
 # from rest_framework_spectacular.views import SpectacularAPIView, SpectacularSwaggerView , SpectacularRedocView #, SpectacularRedocView # اگر میخواهید از Redoc استفاده کنید، این را هم uncomment کنید
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView , SpectacularRedocView  #, SpectacularRedocView # اگر میخواهید از Redoc استفاده کنید، این را هم uncomment کنید
- 
+
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('django.contrib.auth.urls')),
+    # path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/', include("accounts.urls")),  # فرض بر این است که urls.py در accounts/ وجود دارد
     path('blog/', include('blog.urls')),
     
     # برای استفاده از browsable API:
