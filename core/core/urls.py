@@ -11,13 +11,14 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView , S
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('accounts/', include('django.contrib.auth.urls')),
-    path('accounts/', include("accounts.urls")),  # فرض بر این است که urls.py در accounts/ وجود دارد
-    path('blog/', include('blog.urls')),
     
     # برای استفاده از browsable API:
     path('api-auth/', include('rest_framework.urls')),
     
+    # path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/', include("accounts.urls")),  # فرض بر این است که urls.py در accounts/ وجود دارد
+    path('blog/', include('blog.urls')),
+        
    # مسیرهای مربوط به drf-spectacular
     # path('api-core/', include('include_docs_urls')),  # فرض بر این است که urls.py در blog/api/v1/ وجود دارد
     path('schema/', SpectacularAPIView.as_view(), name='schema'), # این مسیر schema را فراهم می‌کند
@@ -31,3 +32,5 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# Swagger UI: http://127.0.0.1:8000/swagger/#/
+

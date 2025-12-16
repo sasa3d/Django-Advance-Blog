@@ -43,15 +43,22 @@ ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=lambda v: [s.strip() for s in v.spl
 # Application definition
 
 INSTALLED_APPS = [
+    #🍑⬇️ Pure Apps 🟢⬇️
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    
+    #🟢 additional Apps 🟢👇
     "accounts",
     "blog",
     "rest_framework",
+    'rest_framework.authtoken',
+    #  To use the TokenAuthentication scheme you'll need to configure the
+    #  authentication classes to include TokenAuthentication
+
     'drf_spectacular', # این خط رو نگه دار، فقط همین!
     # 'include_docs_urls',
     # 'rest_framework_spectacular', # این خط رو پاک کن!
@@ -152,15 +159,31 @@ AUTH_USER_MODEL = "accounts.User"
 
 # restframework settings
 REST_FRAMEWORK = {
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ],
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+       'DEFAULT_FILTER_BACKENDS': [
+           'django_filters.rest_framework.DjangoFilterBackend',
+       ],
+       'DEFAULT_PERMISSION_CLASSES': [
+           'rest_framework.permissions.IsAuthenticated',
+       ],
+       'DEFAULT_AUTHENTICATION_CLASSES': [
+           'rest_framework.authentication.BasicAuthentication',
+           'rest_framework.authentication.SessionAuthentication',
+           'rest_framework.authentication.TokenAuthentication',
+       ],
+       'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+   }
+
     # 'DEFAULT_VERSIONING_CLASS': 'drf_spectacular.versioning.SpectacularVersioning',
     # اگر خواستید کلاس شمای دیگری را اضافه کنید، معمولا برای هر APIView به صورت جداگانه تعیین می‌شود
     # یا با تغییر AutoSchema سفارشی سازی می‌شود، نه اینکه لیست باشد.
     # به جای 'include_docs_urls.openapi.AutoSchema' احتمالاً منظورتان چیزی شبیه به این بوده:
     # 'DEFAULT_SCHEMA_CLASS': 'path.to.your.custom.AutoSchema'
     # اما به طور پیش‌فرض، drf-spectacular با AutoSchema خود به خوبی کار می‌کند.
-}
+# }
+
+SPECTACULAR_SETTINGS = {
+       'TITLE': 'Core API',
+       'DESCRIPTION': 'اسناد خودکاره برای accounts و blog',
+       'VERSION': '1.0.0',
+       'SERVE_INCLUDE_SCHEMA': False,
+   }
