@@ -1,10 +1,42 @@
 from rest_framework import serializers
 from ...models import User # == from core.accounts.models import User 
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError as DjangoValidationError
+
+
 
 class RegisterSerializer(serializers.ModelSerializer):
+    password1 = serializers.CharField(max_length=255, write_only=True)
     class Meta:
         model = User
-        fields = ['email', 'password']
+        fields = ['email', 'password','password1']
         
-
-   
+    def validate(self , attrs):
+        '''این متد برای اعتبار سنجی فیلدها استفاده میشود'''
+        if attrs.get('password') != attrs.get('password1'):
+            # اگر رمز عبور با تکرار آن مطابقت نداشت خطا میدهد
+            raise serializers.ValidationError(
+                {'password Confirmation' :
+                'password dosn,t match(دو تا پسوردات هنوز با هم قهرن؛ یکسانشون کن)رمز اولت با رمز کانفرم شدت باهم قهرند!)'}
+                )
+        try :
+            validate_password(attrs.get('password'))
+        except DjangoValidationError as e: # اگر رمز عبور استانداردهای اعتبار سنجی را نداشت همه ی خطاهای مربوطه را میگیرد و به عنوان یک آبجکت(e) برمیگرداند
+            raise serializers.ValidationError({'PassWord' :list(e.messages)})
+              #این خطاها را به صورت یک لیست از پیام ها به کلاینت برمیگرداند
+            
+        return super().validate(attrs)# ادامه ی اعتبار سنجی را به متد والد میسپارد و نتیجه را برمیگرداند
+    
+    def create(self, validated_data):
+        '''این متد برای ساختن یوزر جدید استفاده میشود'''
+        validated_data.pop("password1", None) # حذف فیلد تکرار رمز عبور از داده های اعتبارسنجی شده
+        # return super().create(validated_data) # ساخت یوزر جدید با داده های اعتبارسنجی شده
+        return User.objects.create_user(**validated_data)
+    # ساخت یوزر جدید با داده های اعتبارسنجی شده با استفاده از متد (که در مدل اصلی ما نوشته ام)create_user مدل یوزر
+        
+        
+    
+    
+        
+        
+            
