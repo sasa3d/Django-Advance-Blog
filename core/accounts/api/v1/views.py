@@ -4,9 +4,12 @@ from rest_framework.response import Response
 from rest_framework import status 
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
-
+from rest_framework.views  import APIView
+from rest_framework.permissions import IsAuthenticated
 
 class RegisterAPIView(generics.GenericAPIView):
+    '''ویوی ثبت نام کاربر جدید'''
+     
     serializer_class = RegisterSerializer
 
     def post(self, request, *args, **kwargs):#زمان post کردن باید object مان را بسازیم پس:
@@ -20,9 +23,9 @@ class RegisterAPIView(generics.GenericAPIView):
         return Response(serializer.errors , status=status.HTTP_400_BAD_REQUEST)
     
 class CustomAuthToken(ObtainAuthToken):
-    serializer_class = CustomAuthTokenSerializer
     '''یک ویوی سفارشی برای دریافت توکن احراز هویت'''
-        # منطق سفارشی برای احراز هویت و بازگرداندن توکن
+    serializer_class = CustomAuthTokenSerializer
+            # منطق سفارشی برای احراز هویت و بازگرداندن توکن
     def post(self, request, *args, **kwargs):
         # میتونی اینجا serializer سفارشی خودت رو هم تعریف کنی اگر خواستی
         serializer = self.serializer_class(data=request.data , 
@@ -36,3 +39,19 @@ class CustomAuthToken(ObtainAuthToken):
             'user_id': user.pk,
             'email': user.email
         })
+        
+        
+"""چون میخایم یک متد حذف (نابودی) برای  توکن  بنویسیم که آن را discard نماید اگر بخاهیم که از کلاس جنریک استفاده کنیم به سریالایزر نیازمند میشویم  و نداریم درنتیجه از یک کلاسی ارثبری میکنیم که نیازی به سریالایزر  نداشته باشد. 
+سوال: چه کلاس به سریالایزر  نیازی ندارد؟ جواب :APIView 
+پس از  APIView  استفاده میکنیم 
+"""
+class CustomDiscardAuthToken(APIView):
+    '''یک ویوی سفارشی برای حذف توکن احراز هویت'''
+    permission_classes = [IsAuthenticated]  # فقط کاربران احراز هویت شده میتوانند توکن خود را حذف کنند
+    def post(self, request, *args, **kwargs):
+        # حذف توکن احراز هویت کاربر
+        try:
+            request.user.auth_token.delete() # حذف توکن مرتبط با کاربر احراز هویت شده
+        except (AttributeError, Token.DoesNotExist):
+            pass
+        return Response({"detail": "Token deleted successfully."}, status=status.HTTP_204_OK)
