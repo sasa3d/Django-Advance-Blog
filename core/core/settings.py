@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "accounts",
     "blog",
     "rest_framework",
+    'rest_framework_simplejwt',
     'rest_framework.authtoken',
     #  To use the TokenAuthentication scheme you'll need to configure the
     #  authentication classes to include TokenAuthentication
@@ -169,6 +170,8 @@ REST_FRAMEWORK = {
            'rest_framework.authentication.BasicAuthentication',
            'rest_framework.authentication.SessionAuthentication',
            'rest_framework.authentication.TokenAuthentication',
+           'rest_framework_simplejwt.authentication.JWTAuthentication',
+
        ],
        'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
    }
