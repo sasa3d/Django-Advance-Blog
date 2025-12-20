@@ -1,14 +1,19 @@
-from rest_framework import generics
-from .serializers import RegisterSerializer , CustomAuthTokenSerializer , CustomTokenObtainPairSerializer  # noqa: F401
+from rest_framework.generics import GenericAPIView 
+from .serializers import RegisterSerializer , CustomAuthTokenSerializer ,\
+    CustomTokenObtainPairSerializer , ChangePasswordSerializer  # noqa: F401 
 from rest_framework.response import Response
 from rest_framework import status 
+
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.views  import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView
+from django.contrib.auth import get_user_model # from ...models import User
 
-class RegisterAPIView(generics.GenericAPIView):
+User = get_user_model()  # استفاده از مدل یوزر سفارشی اگر وجود داشته باشد
+
+class RegisterAPIView(GenericAPIView):
     '''ویوی ثبت نام کاربر جدید'''
      
     serializer_class = RegisterSerializer
@@ -61,4 +66,40 @@ class CustomTokenObtainPairView(TokenObtainPairView):
     '''ویوی سفارشی برای دریافت جفت توکن JWT'''
     # میتوانی اینجا سریالایزر سفارشی خودت رو هم تعریف کنی اگر خواستی
     serializer_class = CustomTokenObtainPairSerializer
+       
+class ChangePasswordAPIView(GenericAPIView): # from generics
+    # Source - https://stackoverflow.com/a/38846554
+        '''ویوی تغییر رمز عبور کاربر'''
+        """
+        An endpoint for changing password.
+        """
+        model = User
+        permission_classes = (IsAuthenticated,)
+        serializer_class = ChangePasswordSerializer
+
+        def get_object(self, queryset=None):
+            obj = self.request.user
+            return obj
+
+        def put(self, request, *args, **kwargs):
+            self.object = self.get_object()
+            serializer = self.get_serializer(data=request.data)
+
+            if serializer.is_valid():
+                # Check old password
+                if not self.object.check_password(serializer.data.get("old_password")):
+                    return Response({"old_password": ["Wrong password.پسورد جدیدت با پسورد قدیمت باهم غریبه هستن همچنان"]}, status=status.HTTP_400_BAD_REQUEST)
+                # set_password also hashes the password that the user will get
+                self.object.set_password(serializer.data.get("new_password"))
+                self.object.save()
+                response = {
+                    'status': 'success دوتا پسوردها باهم آشنا  و یکی شدن تبریک',
+                    'code': status.HTTP_200_OK,
+                    'message': 'Password updated successfully',
+                    'data': []
+                }
+
+                return Response(response)
+
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
        

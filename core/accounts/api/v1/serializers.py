@@ -95,5 +95,26 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         # validated_data['email'] = self.user.email #یا به این روش میتوانی فیلدهای سفارشی اضافه کنی
         # validated_data['user_id'] = self.user.id
         # validated_data['test_field'] = 'This is a custom field'
-        print(validated_data)
+        # print(validated_data)
         return validated_data
+    
+class ChangePasswordSerializer(serializers.Serializer):
+    old_password = serializers.CharField(required=True , max_length=255, write_only=True)
+    new_password = serializers.CharField(required=True , max_length=255, write_only=True)
+    new_password1 = serializers.CharField(required=True , max_length=255, write_only=True)
+    
+    def validate(self , attrs):
+        '''این متد برای اعتبار سنجی فیلدها استفاده میشود'''
+        if attrs.get('new_password') != attrs.get('new_password1'):
+            # اگر رمز عبور جدید با تکرار آن مطابقت نداشت خطا میدهد
+            raise serializers.ValidationError(
+                {'new_password Confirmation' :
+                'new_password dosn,t match(دو تا پسوردات هنوز با هم قهرن؛ یکسانشون کن)رمز اولت با رمز کانفرم شدت باهم قهرند!)'}
+                )
+        try :
+            validate_password(attrs.get('new_password'))
+        except DjangoValidationError as e: # اگر رمز عبور استانداردهای اعتبار سنجی را نداشت همه ی خطاهای مربوطه را میگیرد و به عنوان یک آبجکت(e) برمیگرداند
+            raise serializers.ValidationError({'new_password':list(e.messages)})
+              #این خطاها را به صورت یک لیست از پیام ها به کلاینت برمیگرداند
+            
+        return super().validate(attrs)# ادامه ی اعتبار سنجی را به متد والد میسپارد و نتیجه را برمیگرداند
