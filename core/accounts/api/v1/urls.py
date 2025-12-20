@@ -1,10 +1,10 @@
 from rest_framework_simplejwt.views import (
-TokenObtainPairView,
+TokenObtainPairView,  # noqa: F401
 TokenRefreshView,
 TokenVerifyView,
 )
 from django.urls import path  # include رو وقتی واقعاً لازم داشتی اضافه کن  # noqa: F401
-from .views import CustomAuthToken , RegisterAPIView ,CustomDiscardAuthToken
+from .views import CustomAuthToken , RegisterAPIView ,CustomDiscardAuthToken ,CustomTokenObtainPairView
 # from rest_framework.authtoken.views import obtain_auth_token # handle token authentication
 ''' obtain_auth_token view خودش یک view هست که وقتی صدا زده بشه با دریافت یوزرنیم و پسورد توکن احراز هویت را برمیگرداند
     obtain_auth_token is a built-in view provided by Django REST Framework for handling token-based authentication.
@@ -25,7 +25,8 @@ urlpatterns = [
     path("token/logout/", CustomDiscardAuthToken.as_view(), name="token-logout"),  # مسیر برای حذف توکن احراز هویت با ویوی سفارشی
    
     # JWT Token endpoints    
-    path('jwt/create/', TokenObtainPairView.as_view(), name='jwt-create'),
-    path('jwt/refresh/', TokenRefreshView.as_view(), name='jwt-refresh'),
-    path('jwt/verify', TokenVerifyView.as_view(), name='jwt-verify'),
+    # path('jwt/create/', TokenObtainPairView.as_view(), name='jwt-create'),
+    path('jwt/create/',CustomTokenObtainPairView.as_view(), name='jwt-create'),
+    path('jwt/refresh/',TokenRefreshView.as_view(), name='jwt-refresh'),
+    path('jwt/verify',TokenVerifyView.as_view(), name='jwt-verify'),
 ]

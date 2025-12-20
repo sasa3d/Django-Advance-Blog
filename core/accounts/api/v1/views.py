@@ -1,11 +1,12 @@
 from rest_framework import generics
-from .serializers import RegisterSerializer , CustomAuthTokenSerializer
+from .serializers import RegisterSerializer , CustomAuthTokenSerializer , CustomTokenObtainPairSerializer  # noqa: F401
 from rest_framework.response import Response
 from rest_framework import status 
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.views  import APIView
 from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 class RegisterAPIView(generics.GenericAPIView):
     '''ویوی ثبت نام کاربر جدید'''
@@ -55,3 +56,9 @@ class CustomDiscardAuthToken(APIView):
         except (AttributeError, Token.DoesNotExist):
             pass
         return Response({"detail": "Token deleted successfully."}, status=status.HTTP_204_OK)
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    '''ویوی سفارشی برای دریافت جفت توکن JWT'''
+    # میتوانی اینجا سریالایزر سفارشی خودت رو هم تعریف کنی اگر خواستی
+    serializer_class = CustomTokenObtainPairSerializer
+       

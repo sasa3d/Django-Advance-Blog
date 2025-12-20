@@ -3,9 +3,9 @@ from ...models import User # == from core.accounts.models import User
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError as DjangoValidationError
 
-
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import authenticate
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
 
@@ -37,10 +37,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         # return super().create(validated_data) # ساخت یوزر جدید با داده های اعتبارسنجی شده
         return User.objects.create_user(**validated_data)
     # ساخت یوزر جدید با داده های اعتبارسنجی شده با استفاده از متد (که در مدل اصلی ما نوشته ام)create_user مدل یوزر
-        
-        
-
-
+      
 class CustomAuthTokenSerializer(serializers.Serializer):
     """
     Serializer for user authentication via username and password.
@@ -86,3 +83,17 @@ class CustomAuthTokenSerializer(serializers.Serializer):
 
         attrs['user'] = user
         return attrs
+
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    
+    '''سریالایزر سفارشی برای دریافت جفت توکن JWT'''
+    def validate(self, attrs):
+        validated_data = super().validate(attrs)
+        # میتوانی فیلدهای سفارشی هم اینجا اضافه کنی
+        validated_data.update({'user_id': self.user.id, 'email': self.user.email})#به این روش هم میتوانی فیلدهای سفارشی اضافه کنی یا
+        # validated_data['email'] = self.user.email #یا به این روش میتوانی فیلدهای سفارشی اضافه کنی
+        # validated_data['user_id'] = self.user.id
+        # validated_data['test_field'] = 'This is a custom field'
+        print(validated_data)
+        return validated_data
