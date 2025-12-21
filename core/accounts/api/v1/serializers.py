@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from ...models import User # == from core.accounts.models import User 
+from ...models import Profile, User  # == from core.accounts.models import User 
 from django.contrib.auth.password_validation import validate_password
-from django.core.exceptions import ValidationError as DjangoValidationError
+from django.core.exceptions import ValidationError as DjVE # DVE  <خلاصه شده و مخفف >  DjangoValidationError 
 
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import authenticate
@@ -25,7 +25,7 @@ class RegisterSerializer(serializers.ModelSerializer):
                 )
         try :
             validate_password(attrs.get('password'))
-        except DjangoValidationError as e: # اگر رمز عبور استانداردهای اعتبار سنجی را نداشت همه ی خطاهای مربوطه را میگیرد و به عنوان یک آبجکت(e) برمیگرداند
+        except DjVE as e: # اگر رمز عبور استانداردهای اعتبار سنجی را نداشت همه ی خطاهای مربوطه را میگیرد و به عنوان یک آبجکت(e) برمیگرداند
             raise serializers.ValidationError({'PassWord' :list(e.messages)})
               #این خطاها را به صورت یک لیست از پیام ها به کلاینت برمیگرداند
             
@@ -113,8 +113,17 @@ class ChangePasswordSerializer(serializers.Serializer):
                 )
         try :
             validate_password(attrs.get('new_password'))
-        except DjangoValidationError as e: # اگر رمز عبور استانداردهای اعتبار سنجی را نداشت همه ی خطاهای مربوطه را میگیرد و به عنوان یک آبجکت(e) برمیگرداند
+        except DjVE as e: # اگر رمز عبور استانداردهای اعتبار سنجی را نداشت همه ی خطاهای مربوطه را میگیرد و به عنوان یک آبجکت(e) برمیگرداند
             raise serializers.ValidationError({'new_password':list(e.messages)})
               #این خطاها را به صورت یک لیست از پیام ها به کلاینت برمیگرداند
             
         return super().validate(attrs)# ادامه ی اعتبار سنجی را به متد والد میسپارد و نتیجه را برمیگرداند
+    
+class ProfileSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(source='user.email')
+    class Meta:
+        model = Profile
+        fields = ['id', 'email', 'first_name', 'last_name','image', 'description']
+        
+        
+        
