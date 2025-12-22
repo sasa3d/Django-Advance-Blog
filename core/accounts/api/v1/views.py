@@ -1,7 +1,8 @@
-from rest_framework.generics import GenericAPIView , RetrieveAPIView
+from rest_framework.generics import GenericAPIView , RetrieveUpdateAPIView , RetrieveAPIView  # noqa: F401
 from django.utils.translation import gettext_lazy as _  # noqa: F401
 from .serializers import RegisterSerializer , CustomAuthTokenSerializer ,ProfileSerializer,\
     CustomTokenObtainPairSerializer , ChangePasswordSerializer  # noqa: F401 
+    
 from rest_framework.response import Response
 from rest_framework import status 
 
@@ -12,6 +13,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth import get_user_model # from ...models import User
 from ...models import Profile
+from django.shortcuts import get_object_or_404
+
 
 
 User = get_user_model()  # استفاده از مدل یوزر سفارشی اگر وجود داشته باشد
@@ -106,20 +109,16 @@ class ChangePasswordAPIView(GenericAPIView): # from generics
 
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class ProfileAPIView(RetrieveAPIView): #from generics
+class ProfileAPIView(RetrieveUpdateAPIView): #from generics
     '''ویوی نمایش و به‌روزرسانی پروفایل کاربر'''
     serializer_class = ProfileSerializer  # استفاده از همان سریالایزر ثبت نام برای نمایش و به‌روزرسانی پروفایل
     permission_classes = [IsAuthenticated]  # فقط کاربران احراز هویت شده میتوانند پروفایل خود را مشاهده و ویرایش کنند
     queryset = Profile.objects.all()
-    # def get(self, request, *args, **kwargs):
-    #     '''نمایش پروفایل کاربر'''
-    #     serializer = self.get_serializer(request.user)
-    #     return Response(serializer.data)
-
-    # def put(self, request, *args, **kwargs):
-    #     '''به‌روزرسانی پروفایل کاربر'''
-    #     serializer = self.get_serializer(request.user, data=request.data, partial=True)
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return Response(serializer.data)
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def get_object(self): # بازگرداندن پروفایل کاربر احراز هویت شده بدون lookup- Id
+        qs =  self.get_queryset() 
+        obj = get_object_or_404(qs , user=self.request.user)
+        return obj
+        
+    
+   

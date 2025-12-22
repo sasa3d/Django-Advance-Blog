@@ -120,7 +120,7 @@ class ChangePasswordSerializer(serializers.Serializer):
         return super().validate(attrs)# ادامه ی اعتبار سنجی را به متد والد میسپارد و نتیجه را برمیگرداند
     
 class ProfileSerializer(serializers.ModelSerializer):
-    email = serializers.EmailField(source='user.email')
+    email = serializers.EmailField(source='user.email', read_only=True)
     class Meta:
         model = Profile
         fields = ['id', 'email', 'first_name', 'last_name','image', 'description']
