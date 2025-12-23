@@ -73,8 +73,11 @@ class CustomAuthTokenSerializer(serializers.Serializer):
             if not user:
                 raise serializers.ValidationError(
                     _("Unable to log in with provided credentials."),
-                    code='authorization'
-                )
+                    code='authorization')
+            if not user.is_verified:
+                raise serializers.ValidationError(
+                    _("{'details':'user is not verified'}"),
+                code='authorization')
         else:
             raise serializers.ValidationError(
                 _('Must include "username" and "password".'),
@@ -90,6 +93,10 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     '''سریالایزر سفارشی برای دریافت جفت توکن JWT'''
     def validate(self, attrs):
         validated_data = super().validate(attrs)
+        if not self.user.is_verified:
+                raise serializers.ValidationError(
+                    _("{'details':'user is not verified'}"),
+                code='authorization')
         # میتوانی فیلدهای سفارشی هم اینجا اضافه کنی
         validated_data.update({'user_id': self.user.id, 'email': self.user.email})#به این روش هم میتوانی فیلدهای سفارشی اضافه کنی یا
         # validated_data['email'] = self.user.email #یا به این روش میتوانی فیلدهای سفارشی اضافه کنی

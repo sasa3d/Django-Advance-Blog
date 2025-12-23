@@ -10,8 +10,8 @@ class CostumUserAdmin(UserAdmin):
     this is a custom admin class for costum user model 
     '''
     model = User
-    list_display = ['email', 'is_staff', 'is_superuser', 'is_active']
-    list_filter = ['email','is_staff', 'is_superuser', 'is_active']
+    list_display = ['email', 'is_staff', 'is_superuser', 'is_active','is_verified']
+    list_filter = ['email','is_staff', 'is_superuser', 'is_active', 'is_verified']
     search_fields = ['email']
     ordering = ['email']
     fieldsets = (
@@ -23,7 +23,7 @@ class CostumUserAdmin(UserAdmin):
          ),
         ("Permissions", {
             'fields': (
-                'is_staff', 'is_superuser', 'is_active'
+                'is_staff', 'is_superuser', 'is_active', 'is_verified'
                 )
             }
          ),
@@ -49,7 +49,7 @@ class CostumUserAdmin(UserAdmin):
             'classes': ('wide',),
             'fields': ('email', 'password1', 'password2',
                        'is_staff', 'is_superuser',
-                       'is_active'
+                       'is_active', 'is_verified'
                        )}
          ),
     )

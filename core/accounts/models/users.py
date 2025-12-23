@@ -29,6 +29,7 @@ class UserManager(BaseUserManager):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_active', True)
+        extra_fields.setdefault('is_verified', True)
         
         if extra_fields.get('is_staff') is not True:
             raise ValueError(_('Superuser must have is_staff=True.'))
@@ -46,7 +47,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     #کسی که یا USER یا STAFF ی is_staff نباشد حق دسترسی به پنل ادمین را ندارد
     
     is_active = models.BooleanField(default=True)
-    # is_verified = models.models.BooleanField(default=True)
+    is_verified = models.BooleanField(default=False)
     
     USERNAME_FIELD = 'email'
     """ 
