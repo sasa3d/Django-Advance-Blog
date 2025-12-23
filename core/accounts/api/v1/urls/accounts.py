@@ -4,14 +4,13 @@ TokenRefreshView,
 TokenVerifyView,
 )
 from django.urls import path  # include رو وقتی واقعاً لازم داشتی اضافه کن  # noqa: F401
-from .views import CustomAuthToken , RegisterAPIView , ProfileAPIView,\
+from ..views import CustomAuthToken , RegisterAPIView ,\
 CustomDiscardAuthToken ,CustomTokenObtainPairView, ChangePasswordAPIView
 # from rest_framework.authtoken.views import obtain_auth_token # handle token authentication
 ''' obtain_auth_token view خودش یک view هست که وقتی صدا زده بشه با دریافت یوزرنیم و پسورد توکن احراز هویت را برمیگرداند
     obtain_auth_token is a built-in view provided by Django REST Framework for handling token-based authentication.
 '''
 
-app_name = "accounts_api_v1"  # اختیاری اما مفید برای namespace
 
 urlpatterns = [
     # Registration
@@ -33,6 +32,5 @@ urlpatterns = [
     path('jwt/refresh/',TokenRefreshView.as_view(), name='jwt-refresh'),
     path('jwt/verify',TokenVerifyView.as_view(), name='jwt-verify'),
     
-    #Profile
-    path('profile/',ProfileAPIView.as_view(),name='profile'),  # استفاده مجدد از ویوی ثبت نام برای نمایش و به‌روزرسانی پروفایل کاربر
+   
 ]
