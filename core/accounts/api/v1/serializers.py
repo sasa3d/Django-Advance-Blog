@@ -93,6 +93,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     '''سریالایزر سفارشی برای دریافت جفت توکن JWT'''
     def validate(self, attrs):
         validated_data = super().validate(attrs)
+        #  کاربران بعداز لاگین درخواست توکن برای verified کردن
         if not self.user.is_verified:
                 raise serializers.ValidationError(
                     _("{'details':'user is not verified'}"),

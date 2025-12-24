@@ -1,3 +1,4 @@
+x-docker-compatibility: true
 
 services:
   backend:
@@ -10,7 +11,26 @@ services:
     ports:
       - "8000:8000"
     environment:
-    - SECRET_KEY=your_secret_key
-    - DEBUG=True
-    - ALLOWED_HOSTS=localhost,0.0.0.0,127.0.0.1
-    #- DATABASE_URL=your_database_url
+      - SECRET_KEY=your_secret_key
+      - DEBUG=True
+      - ALLOWED_HOSTS=localhost,0.0.0.0,127.0.0.1
+    # depends_on:
+    #   - smtp4dev  # اگر backend به smtp نیاز داره
+
+  smtp4dev:
+    image: rnwood/smtp4dev:v3
+    container_name: smtp4dev
+    restart: always
+    ports:
+      - "5000:80"    # Web UI
+      - "2525:25"    # SMTP (25 رو عوض کردم چون ممکنه conflict بشه)
+      - "143:143"    # IMAP
+      - "110:110"    # POP3
+    volumes:
+      - smtp4dev-data:/smtp4dev
+    environment:
+      - ServerOptions__Urls=http://*:80
+      - ServerOptions__HostName=smtp4dev
+
+volumes:
+  smtp4dev-data:

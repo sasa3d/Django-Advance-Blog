@@ -185,8 +185,18 @@ REST_FRAMEWORK = {
 # }
 
 SPECTACULAR_SETTINGS = {
-       'TITLE': 'Core API',
-       'DESCRIPTION': 'اسناد خودکاره برای accounts و blog',
-       'VERSION': '1.0.0',
+       'TITLE': 'Django Core API',
+       'DESCRIPTION':  'accounts و blog اسناد خودکاره برای ',
+       'VERSION': '3.0.0',
        'SERVE_INCLUDE_SCHEMA': False,
+       'CREATED BY':'Saber Modirian'
    }
+
+# Email Configuration
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = False
+EMAIL_HOST = 'smtp4dev'
+EMAIL_PORT = 25
+EMAIL_HOST_USER =''      # Replace with your Gmail address
+EMAIL_HOST_PASSWORD = '' # Use an App Password if 2FA is enabled
