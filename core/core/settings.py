@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     # 'include_docs_urls',
     # 'rest_framework_spectacular', # این خط رو پاک کن!
     'django_filters',
+    'mail_templated', #با django-templated-email متفاوت است این ماژول
 ]
 
 MIDDLEWARE = [
@@ -189,7 +190,16 @@ SPECTACULAR_SETTINGS = {
        'DESCRIPTION':  'accounts و blog اسناد خودکاره برای ',
        'VERSION': '3.0.0',
        'SERVE_INCLUDE_SCHEMA': False,
-       'CREATED BY':'Saber Modirian'
+       'CREATED BY':'Saber Modirian',
+         
+    # 👇👇 جادوی اصلی اینجاست 👇👇
+    "SWAGGER_UI_SETTINGS": {
+        "deepLinking": True,
+        "persistAuthorization": True,
+        "displayOperationId": True,
+        "displayRequestDuration": True, # Request Duration برای نمایش SWAGGER_UI  در  این خط رو اضافه کن! ✅
+    },
+       
    }
 
 # Email Configuration

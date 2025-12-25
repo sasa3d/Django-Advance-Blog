@@ -14,7 +14,8 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth import get_user_model # from ...models import User
 from ...models import Profile
 from django.shortcuts import get_object_or_404
-from django.core.mail import send_mail
+# from django.core.mail import send_mail
+from mail_templated import send_mail
 
 
 
@@ -123,13 +124,14 @@ class ProfileAPIView(RetrieveUpdateAPIView): #from generics
         
     
 class TestEmailSend(GenericAPIView): # from generics 
+    '''  این کلاس برای تست ایمیل میباشد  '''
+    serializer_class = None  # <--- این خط رو اضافه کن تا Swagger بفهمه خبری از سریلایزر نیست
+
     def get(self, request, *args, **kwargs):
-         
-     send_mail(
-        "Subject here",
-        "Here is the message.",
-        "from@example.com",
-        ["to@example.com"],
-        fail_silently=False,
-        )
-     return Response('Email Sent!!!')
+            send_mail(
+                'email/hello.tpl',           # 1. آدرس تمپلیت
+                {'name': 'Saber'},           # 2. کانتکست (داده‌های ارسالی به تمپلیت)
+                'admin@admin.com',           # 3. فرستنده (فقط یک استرینگ ساده)
+                ['sabermodirian@gmail.com']  # 4. گیرنده (لیستی از استرینگ‌ها)
+            )
+            return Response('Email Sent!!!')
