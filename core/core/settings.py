@@ -197,7 +197,7 @@ SPECTACULAR_SETTINGS = {
         "deepLinking": True,
         "persistAuthorization": True,
         "displayOperationId": True,
-        "displayRequestDuration": True, # Request Duration برای نمایش SWAGGER_UI  در  این خط رو اضافه کن! ✅
+        "displayRequestDuration": True, # میباشد Request Duration برای نمایش SWAGGER_UI  اضافه کردن این خط در ✅
     },
        
    }
