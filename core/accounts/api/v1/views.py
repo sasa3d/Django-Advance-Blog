@@ -172,7 +172,8 @@ class TestEmailSend(GenericAPIView): # from generics
                 # to=['sabermodirian@gmail.com']       # 4. گیرنده (لیستی از استرینگ‌ها)
                 to=[self.email]
             )
-        # TODO: Add more useful commands here.
+        
+# TODO:نشود(APIView) این بخش را در یک ترد جداگانه اجرا میکنیم تا ارسال ایمیل باعث کند شدن پاسخگویی  
         EmailThread(email_obj).start()
         
         return Response('Email Sent!!!')
@@ -190,15 +191,9 @@ class viewsActivateAPIViews(APIView):
     # def post(self, request, token,*args, **kwargs):
     def get(self, request, token,*args, **kwargs):
         # این فانکشن برای اکتیو کردن کاربر است
-        # token = request.query_params.get('token')
-        # token = request.data.get('token')
-        # token = request.POST.get('token')
-        # token = request.GET.get('token')
-        # print(kwargs)
-        # print(args)
-        print(token)
-        print("Activation token:", token)
-        # print(token)
+        print(token)    
+# TODO:  # decode --> id user  # object user # activate user # is_verified = True # save user
+# TODO: if token not valid: ???? else: valid --> Response OK
         return Response({'OK':'Activation endpoint is under construction.',
                          'Activation Token': token},
                         status=status.HTTP_200_OK)
