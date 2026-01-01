@@ -19,6 +19,10 @@ from mail_templated import send_mail  # noqa: F401
 from mail_templated import EmailMessage
 from ..utils import EmailThread
 
+# import for JWT
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.exceptions import AuthenticationFailed
+
 
 
 User = get_user_model()  # استفاده از مدل یوزر سفارشی اگر وجود داشته باشد
@@ -128,14 +132,28 @@ class ProfileAPIView(RetrieveUpdateAPIView): #from generics
 class TestEmailSend(GenericAPIView): # from generics 
     '''  این کلاس برای تست ایمیل میباشد  '''
     serializer_class = None  # <--- این خط رو اضافه کن تا Swagger بفهمه خبری از سریلایزر نیست
-
+    
     def get(self, request, *args, **kwargs):
+        self.email = "KaramAli@gmail.com"
+        user_obj = get_object_or_404(User , email=self.email)
+        token = self.get_tokens_for_user(user_obj)
+        
         email_obj = EmailMessage( 'email/hello.tpl',   # 1. آدرس تمپلیت
-                {'name': 'Saber'},                   # 2. کانتکست (داده‌های ارسالی به تمپلیت)
+                # {'name': 'Saber'}, 
+                {'token': token } ,      # 2. کانتکست (داده‌های ارسالی به تمپلیت)
                 'admin@admin.com',                   # 3. فرستنده (فقط یک استرینگ ساده)
-                to=['sabermodirian@gmail.com']       # 4. گیرنده (لیستی از استرینگ‌ها)
+                # to=['sabermodirian@gmail.com']       # 4. گیرنده (لیستی از استرینگ‌ها)
+                to=[self.email]
             )
         # TODO: Add more useful commands here.
         EmailThread(email_obj).start()
         
         return Response('Email Sent!!!')
+
+    def get_tokens_for_user(self,user):
+        if not user.is_active:
+         raise AuthenticationFailed("User is not active")
+
+        refresh = RefreshToken.for_user(user)
+
+        return  str(refresh.access_token)
