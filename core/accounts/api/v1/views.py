@@ -18,11 +18,14 @@ from django.shortcuts import get_object_or_404
 from mail_templated import send_mail  # noqa: F401
 from mail_templated import EmailMessage
 from ..utils import EmailThread
-
 # import for JWT
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import AuthenticationFailed
-
+import jwt
+import django.core.validators as validators
+from jwt import ExpiredSignatureError, InvalidTokenError , InvalidSignatureError  # noqa: F401
+from datetime import datetime  # noqa: F401
+from django.conf import settings
 
 
 User = get_user_model()  # استفاده از مدل یوزر سفارشی اگر وجود داشته باشد
@@ -186,25 +189,36 @@ class TestEmailSend(GenericAPIView): # from generics
 
         return  str(refresh.access_token)
     
+     
+# TODO:  # decode --> id user  # object user # activate user # is_verified = True # save user
+# TODO: if token not valid: ???? else: valid --> Response OK
 class viewsActivateAPIViews(APIView):
     '''  کاین کلاس  برای اکتیو کردن کاربر توسط توکن ارسالی از طریق ایمیل میباشد  '''
     # def post(self, request, token,*args, **kwargs):
     def get(self, request, token,*args, **kwargs):
         # این فانکشن برای اکتیو کردن کاربر است
-        print(token)    
-# TODO:  # decode --> id user  # object user # activate user # is_verified = True # save user
-# TODO: if token not valid: ???? else: valid --> Response OK
-        return Response({'OK':'Activation endpoint is under construction.',
-                         'Activation Token': token},
+    #  Example: Your JWT token (from request header or elsewhere)
+        try:
+            token = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+            user_id = token.get('user_id')
+        except jwt.ExpiredSignatureError :
+            raise validators.ValidationError(
+                {'error': 'Token Activation has been  Expired'},
+                code=status.HTTP_400_BAD_REQUEST
+            )
+                
+        except jwt.InvalidSignatureError or jwt.InvalidTokenError:
+            raise validators.ValidationError(
+                {'error': 'Token is invalid'},
+                code=status.HTTP_400_BAD_REQUEST
+            )
+        user_obj = get_object_or_404(User , pk=user_id)
+        if  user_obj.is_verified:
+            return Response({'detail':'User is already verified.'},
+                            status=status.HTTP_200_OK)
+        user_obj.is_verified = True
+        user_obj.save()
+        return Response({'detail':'Your account has been activated and verified successfully.'},
                         status=status.HTTP_200_OK)
-        
-        # try:
-        #     payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
-        #     user = User.objects.get(pk=payload['user_id'])
-        #     if not user.is_active:
-        #         user.is_active = True
-        #         user.save()
-        #     return Response({'email': 'Successfully activated'}, status=status.HTTP_200_OK)
-        # except jwt.ExpiredSignatureError as identifier:
-        #     return Response({'error': 'Activation Expired'}, status=status.HTTP_400_BAD_REQUEST)
+#        
         
