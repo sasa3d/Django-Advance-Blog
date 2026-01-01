@@ -31,16 +31,43 @@ class RegisterAPIView(GenericAPIView):
     '''ویوی ثبت نام کاربر جدید'''
      
     serializer_class = RegisterSerializer
-
     def post(self, request, *args, **kwargs):#زمان post کردن باید object مان را بسازیم پس:
         serializer = RegisterSerializer(data=request.data)  # ==self.get_serializer(data=request.data)  #ابتدا serializer را با داده های ورودی مقدار دهی میکنیم
         if serializer.is_valid():
             serializer.save()
+            email_obj= serializer.validated_data['email']
+            ''' این بخش برای ارسال ایمیل خوش آمد گویی به کاربر جدید است '''
             data = {
-                "email":f"{serializer.validated_data['email']} ایمیل کاربری مورد نظر شما با موفقیت ایجاد شد"
+                "email":f"{email_obj} ایمیل کاربری مورد نظر شما با موفقیت ایجاد شد"
             }
+            user_obj = get_object_or_404(User , email=email_obj)
+            token = self.get_tokens_for_user(user_obj)
+            ''' اینجا ایمیل خوش آمد گویی را ارسال میکنیم '''
+            
+        
+            email_instance = EmailMessage( 'email/activation_email.tpl',   # 1. آدرس تمپلیت
+                # {'name': 'Saber'}, 
+                {'token': token } ,             # 2. کانتکست (داده‌های ارسالی به تمپلیت)
+                'admin@admin.com',                   # 3. فرستنده (فقط یک استرینگ ساده)
+                # to=['sabermodirian@gmail.com']       # 4. گیرنده (لیستی از استرینگ‌ها)
+                to=[email_obj]
+            )
+        # TODO:نشود(APIView) این بخش را در یک ترد جداگانه اجرا میکنیم تا ارسال ایمیل باعث کند شدن پاسخگویی  
+            EmailThread(email_instance).start()
             return Response(data , status=status.HTTP_201_CREATED)
         return Response(serializer.errors , status=status.HTTP_400_BAD_REQUEST)
+    
+        
+        
+        
+
+    def get_tokens_for_user(self,user):
+        if not user.is_active:
+         raise AuthenticationFailed("User is not active")
+
+        refresh = RefreshToken.for_user(user)
+
+        return  str(refresh.access_token)
     
 class CustomAuthToken(ObtainAuthToken):
     '''یک ویوی سفارشی برای دریافت توکن احراز هویت'''
@@ -140,7 +167,7 @@ class TestEmailSend(GenericAPIView): # from generics
         
         email_obj = EmailMessage( 'email/hello.tpl',   # 1. آدرس تمپلیت
                 # {'name': 'Saber'}, 
-                {'token': token } ,      # 2. کانتکست (داده‌های ارسالی به تمپلیت)
+                {'token': token } ,             # 2. کانتکست (داده‌های ارسالی به تمپلیت)
                 'admin@admin.com',                   # 3. فرستنده (فقط یک استرینگ ساده)
                 # to=['sabermodirian@gmail.com']       # 4. گیرنده (لیستی از استرینگ‌ها)
                 to=[self.email]
@@ -157,3 +184,32 @@ class TestEmailSend(GenericAPIView): # from generics
         refresh = RefreshToken.for_user(user)
 
         return  str(refresh.access_token)
+    
+class viewsActivateAPIViews(APIView):
+    '''  کاین کلاس  برای اکتیو کردن کاربر توسط توکن ارسالی از طریق ایمیل میباشد  '''
+    # def post(self, request, token,*args, **kwargs):
+    def get(self, request, token,*args, **kwargs):
+        # این فانکشن برای اکتیو کردن کاربر است
+        # token = request.query_params.get('token')
+        # token = request.data.get('token')
+        # token = request.POST.get('token')
+        # token = request.GET.get('token')
+        # print(kwargs)
+        # print(args)
+        print(token)
+        print("Activation token:", token)
+        # print(token)
+        return Response({'OK':'Activation endpoint is under construction.',
+                         'Activation Token': token},
+                        status=status.HTTP_200_OK)
+        
+        # try:
+        #     payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+        #     user = User.objects.get(pk=payload['user_id'])
+        #     if not user.is_active:
+        #         user.is_active = True
+        #         user.save()
+        #     return Response({'email': 'Successfully activated'}, status=status.HTTP_200_OK)
+        # except jwt.ExpiredSignatureError as identifier:
+        #     return Response({'error': 'Activation Expired'}, status=status.HTTP_400_BAD_REQUEST)
+        
