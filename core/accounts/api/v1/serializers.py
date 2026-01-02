@@ -143,8 +143,8 @@ class ActivationResendSerializer(serializers.Serializer):
                 
         try:
              user_obj = User.objects.get(email=email_atr)
-        except User.DoesNorExistL:
-            raise serializers.VallidationError({'Details':'User does not Exist!!!❌'})
+        except User.DoesNotExist:
+            raise serializers.ValidationError({'Details':'User does not Exist!!!❌'})
         if user_obj.is_verified:
             raise serializers.ValidationError({'Details':'User is activated and verified✅'}) 
         attrs['user']=user_obj
