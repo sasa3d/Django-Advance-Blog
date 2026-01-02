@@ -6,7 +6,7 @@ TokenVerifyView,
 from django.urls import path  # include رو وقتی واقعاً لازم داشتی اضافه کن  # noqa: F401
 from ..views import CustomAuthToken , RegisterAPIView ,TestEmailSend,\
 CustomDiscardAuthToken ,CustomTokenObtainPairView, ChangePasswordAPIView ,\
-    viewsActivateAPIViews ,ActivateResend
+    viewsActivateAPIViews ,ActivateResendAPIView
 # from rest_framework.authtoken.views import obtain_auth_token # handle token authentication
 ''' obtain_auth_token view خودش یک view هست که وقتی صدا زده بشه با دریافت یوزرنیم و پسورد توکن احراز هویت را برمیگرداند
     obtain_auth_token is a built-in view provided by Django REST Framework for handling token-based authentication.
@@ -22,7 +22,7 @@ urlpatterns = [
     path('activate/confirm/<str:token>/', viewsActivateAPIViews.as_view() , name='activate'),
     
      # resend-activation
-    path('activate/resend/',ActivateResend.as_view() , name='activate-resend'),
+    path('activate/resend/',ActivateResendAPIView.as_view() , name='activate-resend'),
     
     #change password
     path('change-password/',ChangePasswordAPIView.as_view(),name='change-password'),

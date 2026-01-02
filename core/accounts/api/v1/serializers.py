@@ -134,4 +134,18 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = ['id', 'email', 'first_name', 'last_name','image', 'description']
         
         
-        
+class ActivationResendSerializer(serializers.Serializer):
+    ''' ا برای ساخت و ارسال دوباره توکن از طریق ایمیل کاربری ست'''
+    email = serializers.EmailField(required=True) 
+    
+    def validate(self,attrs):
+        email_atr = attrs.get('email')
+                
+        try:
+             user_obj = User.objects.get(email=email_atr)
+        except User.DoesNorExistL:
+            raise serializers.VallidationError({'Details':'User does not Exist!!!❌'})
+        if user_obj.is_verified:
+            raise serializers.ValidationError({'Details':'User is activated and verified✅'}) 
+        attrs['user']=user_obj
+        return super().validate(attrs)          
