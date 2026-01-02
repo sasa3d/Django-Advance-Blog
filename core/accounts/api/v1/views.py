@@ -22,7 +22,11 @@ from ..utils import EmailThread
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import AuthenticationFailed
 import jwt
-import django.core.validators as validators
+# این ایمپورت غلطه (برای این کار):
+# import django.core.validators as validators ❌
+# این ایمپورت درسته:
+from rest_framework.exceptions import ValidationError # ✅
+
 from jwt import ExpiredSignatureError, InvalidTokenError , InvalidSignatureError  # noqa: F401
 from datetime import datetime  # noqa: F401
 from django.conf import settings
@@ -202,13 +206,14 @@ class viewsActivateAPIViews(APIView):
             token = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
             user_id = token.get('user_id')
         except jwt.ExpiredSignatureError :
-            raise validators.ValidationError(
+            raise ValidationError(
+                
                 {'error': 'Token Activation has been  Expired'},
                 code=status.HTTP_400_BAD_REQUEST
             )
                 
         except jwt.InvalidSignatureError or jwt.InvalidTokenError:
-            raise validators.ValidationError(
+            raise ValidationError(
                 {'error': 'Token is invalid'},
                 code=status.HTTP_400_BAD_REQUEST
             )
@@ -221,4 +226,32 @@ class viewsActivateAPIViews(APIView):
         return Response({'detail':'Your account has been activated and verified successfully.'},
                         status=status.HTTP_200_OK)
 #        
-        
+class ActivateResend(APIView):
+    ''' این کلاس ویو برای ساخت و ارسال دوباره توکن از طریق ایمیل کاربری ست''' 
+    def post(self, request , *args, **kwargs):
+        email = request.data.get('email') #با متد post از کاربر ایمیل (کاربری)ش رو بگیر
+        if email: #اگر ایمیل وجود داشت بیا  دوباره توکن بساز و برای ایمیل کاربریش ارسال کن
+            self.email = "KaramAli@gmail.com"
+            user_obj = get_object_or_404(User , email=email)
+            token = self.get_tokens_for_user(user_obj)
+            
+            email_obj = EmailMessage(
+                    'email/hello.tpl',    # 1. آدرس تمپلیت
+                    {'token': token } ,   # 2. کانتکست (داده‌های ارسالی به تمپلیت)
+                    'admin@admin.com',    # 3. فرستنده (فقط یک استرینگ ساده)
+                    to=[email]       # 4. گیرنده (لیستی از استرینگ‌ها)
+                )
+            
+    # TODO:نشود(APIView) این بخش را در یک ترد جداگانه اجرا میکنیم تا ارسال ایمیل باعث کند شدن پاسخگویی  
+            EmailThread(email_obj).start()
+            return Response({'Email-Resending':'User Activation Resent Successfully!✅'},
+                status=status.HTTP_200_OK)
+        else:
+            return Response({'Email-Resending':'Invalid Request!❌'}, 
+                 status=status.HTTP_400_BAD_REQUEST)
+    def get_tokens_for_user(self , user):
+        refresh = RefreshToken.for_user(user)
+        return str(refresh.access_token)
+    
+                  
+                
