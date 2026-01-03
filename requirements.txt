@@ -1,22 +1,24 @@
 #todo general modules:
 Django>=4.0,<5.0
 psycopg2>=2.8
-python-decouple == 3.8
-pillow == 11.1.0
-djangorestframework == 3.16.0
+python-decouple==3.8
+pillow==11.1.0
+djangorestframework==3.16.0
 
 #todo third party modules:
+markdown==3.8
+django-filter==25.1
+drf-spectacular==0.26.0
 
-markdown == 3.8
-django-filter == 25.1
-drf-spectacular == 0.26.0
-djangorestframework-simplejwt
+# اینجا ورژن رو پین کردم که خیالت تخت باشه
+djangorestframework-simplejwt>=5.3.0
+
+# این همون فراریه که داشتی دنبالش می‌دویدی! 👇
+djoser>=2.2.0
 
 # drf-yasg[validation]
-
 
 #todo deployment :
 
 #todo email third party modules:
-django-mail-templated == 2.6.5 #با django-templated-email متفاوت است این ماژول
-
+django-mail-templated==2.6.5

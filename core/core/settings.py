@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "accounts",
     "blog",
     "rest_framework",
+    "djoser",
     'rest_framework_simplejwt',
     'rest_framework.authtoken',
     #  To use the TokenAuthentication scheme you'll need to configure the
