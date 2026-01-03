@@ -148,4 +148,9 @@ class ActivationResendSerializer(serializers.Serializer):
         if user_obj.is_verified:
             raise serializers.ValidationError({'Details':'User is activated and verified✅'}) 
         attrs['user']=user_obj
-        return super().validate(attrs)          
+        return super().validate(attrs)  
+    
+
+        
+    
+             
