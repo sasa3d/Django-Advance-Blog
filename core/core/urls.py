@@ -19,7 +19,7 @@ urlpatterns = [
     path('accounts/', include("accounts.urls")),  # فرض بر این است که urls.py در accounts/ وجود دارد
     path('blog/', include('blog.urls')),
         
-   # مسیرهای مربوط به drf-spectacular
+    # مسیرهای مربوط به drf-spectacular
     # path('api-core/', include('include_docs_urls')),  # فرض بر این است که urls.py در blog/api/v1/ وجود دارد
     path('schema/', SpectacularAPIView.as_view(), name='schema'), # این مسیر schema را فراهم می‌کند
     path('swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'), # این مسیر Swagger UI را نمایش می‌دهد

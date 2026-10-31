@@ -1,5 +1,6 @@
 from django.urls import path  # type: ignore
-from . import views 
+# from .views import RedirectToMaktab  for fbv
+from . import views  # for cbv
 from django.urls import include  # type: ignore
 # from django.views.generic import TemplateView
 # from django.views.generic.base import RedirectView  # noqa: F401
@@ -9,10 +10,10 @@ app_name = "blog"
 
 urlpatterns = [ 
     
-     path("fbv-index/", views.indexView.as_view(), name="fbv-index"),  # CBV با استفاده از as_view()
+    #  path("fbv-index/", views.indexView.as_view(), name="fbv-index"), 
     # path("index/", TemplateView.as_view(template_name="blog/index.html"), name="index"),
 
-    path("cbv-index/", views.indexView.as_view(), name="cbv-index"),
+    path("cbv-index/", views.indexView.as_view(), name="cbv-index"),  # CBV با استفاده از as_view()
 
     path("post/", views.PostListView.as_view(), name="post-list"),
     path("post/<int:pk>/", views.PostDetailView.as_view(), name="post-detail"),

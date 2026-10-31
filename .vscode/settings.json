@@ -309,4 +309,6 @@
         "reportOptionalCall": "none",
         "reportGeneralTypeIssues": "none"
     
-    }}
+    },
+    "python-envs.defaultEnvManager": "ms-python.python:system"
+}

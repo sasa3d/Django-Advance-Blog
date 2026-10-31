@@ -1,4 +1,5 @@
-FROM python:3.12
+FROM mirror-docker.runflare.com/library/python:3.12
+
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
