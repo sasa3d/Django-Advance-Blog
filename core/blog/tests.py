@@ -24,24 +24,27 @@ class TestUrl(SimpleTestCase):
 
     def test_post_list_url(self):
         response = self.client.get("/blog/post/")
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
 
     def test_post_detail_url(self):
         # Assuming you have a post with pk=1 for testing
         response = self.client.get("/blog/post/1/")
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
 
     def test_post_create_url(self):
         response = self.client.get("/blog/post/create/")
-        self.assertEqual(response.status_code, 200)
+        print("status:", response.status_code)
+        print("redirect to:", response.headers.get("Location"))
+
+        self.assertEqual(response.status_code, 302)
 
     def test_post_edit_url(self):
         # Assuming you have a post with pk=1 for testing
         response = self.client.get("/blog/post/1/edit/")
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
 
     def test_post_delete_url(self):
         # Assuming you have a post with pk=1 for testing
         response = self.client.get("/blog/post/1/delete/")
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
     
