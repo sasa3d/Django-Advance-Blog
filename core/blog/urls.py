@@ -10,10 +10,10 @@ app_name = "blog"
 
 urlpatterns = [ 
     
-    #  path("fbv-index/", views.indexView.as_view(), name="fbv-index"), 
+    #  path("fbv-index/", views.IndexView.as_view(), name="fbv-index"), 
     # path("index/", TemplateView.as_view(template_name="blog/index.html"), name="index"),
 
-    path("cbv-index/", views.indexView.as_view(), name="cbv-index"),  # CBV با استفاده از as_view()
+    path("cbv-index/", views.IndexView.as_view(), name="cbv-index"),  # CBV با استفاده از as_view()
 
     path("post/", views.PostListView.as_view(), name="post-list"),
     path("post/<int:pk>/", views.PostDetailView.as_view(), name="post-detail"),

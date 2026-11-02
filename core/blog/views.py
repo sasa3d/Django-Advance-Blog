@@ -16,7 +16,7 @@ from .forms import PostForm  # noqa: F401
 # from rest_framework.response import Response
 # type: ignore
 #from django.views.generic.base import TemplateView
-class indexView(TemplateView):  # noqa: F811
+class IndexView(TemplateView):  # noqa: F811
     ''' this is a class based view to show the index page'''
     template_name = "index.html"
     def  get_context_data(self, **kwargs):
