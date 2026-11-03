@@ -7,21 +7,22 @@ from accounts.models import Profile ,User
 
 class TestPostModel(TestCase):
     """ this class is used to test the Post model in the blog app. """
+    def setUp(self):
+         # Create a Post instance
+                self.user = User.objects.create_user(email="test@example.com", password="testpassword")
+                self.profile=Profile.objects.create(
+                    user=self.user,
+                    first_name="Test", 
+                    last_name="User" ,
+                    description= "Test user description",  
+                                       )
+        
     def test_post_model_creation_with_valid_data(self):
         """
         Test the creation of a Post model instance with valid data.
         """
-        # Create a Post instance
-        user = User.objects.create_user(email="test@example.com", password="testpassword")
-        profile=Profile.objects.create(
-            user=user,
-            first_name="Test", 
-            last_name="User" ,
-            description= "Test user description",  
-                               )
-        
         post = Post.objects.create(
-            author=profile ,
+            author=self.profile ,
             title="Test Post",
             content="This is a test post content.",
             status=True,
@@ -34,3 +35,5 @@ class TestPostModel(TestCase):
         self.assertEqual(post.title, "Test Post")
         self.assertEqual(post.content, "This is a test post content.")
         self.assertTrue(post.status)
+        self.assertTrue(Post.objects.filter(pk=post.id).exists())
+        
