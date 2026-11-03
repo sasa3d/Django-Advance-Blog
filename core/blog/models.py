@@ -32,7 +32,9 @@ class Post(models.Model):
     content = models.TextField()
     status = models.BooleanField()
     category = models.ForeignKey(
-        "Category", on_delete=models.SET_NULL, null=True, blank=True
+        "Category", on_delete=models.SET_NULL, 
+    null=True,
+    blank=False,
     )
 
     # Remove auto_now and auto_now_add
