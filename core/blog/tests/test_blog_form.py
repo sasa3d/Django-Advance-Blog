@@ -1,23 +1,22 @@
 from django.test import SimpleTestCase , TestCase
 from ..forms import PostForm # ..forms import PostForm
 from datetime import datetime
+from ..models import Category
 
 
-class TestPostForm(SimpleTestCase):
-    """
-     This class is used to test the PostForm form in the blog app.
-     این کلاس برای تست فرم PostForm در اپلیکیشن بلاگ استفاده می شود.   
-    """
+class TestPostForm(TestCase):
+    
     def test_post_form_with_valid_data(self):
-        """ 
-        This method tests the PostForm form with valid data.
-        این متد فرم PostForm را با داده های معتبر تست می کند
-        .و چون داده های معتبر هستند، فرم باید معتبر باشد و is_valid() باید True برگرداند.
         """
+        Use TestCase and supply Category's object in PostForm test 
+        """
+        category_obj = Category.objects.create(name="Hello Test Category")  # Create a category object for testing
         form = PostForm(data={
             "title": "Test Post",
             "content": "This is a test post content.",
             "status":True,
+            # "category":None,# حتی نباید خالی باشد
+            "category": category_obj,
             "published_date": datetime.now(),
         })
         self.assertTrue(form.is_valid())
