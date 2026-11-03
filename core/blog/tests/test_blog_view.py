@@ -23,6 +23,17 @@ class TestBlogViews(TestCase):
         
         self.assertEqual(response.status_code, 200)
         
+    def test_blog_index_url_response_successfull(self):
+            """ Test the blog index URL response is successful.
+            این متد برای تست موفقیت‌آمیز بودن پاسخ URL صفحه اصلی بلاگ استفاده می‌شود.
+            """
+            url=reverse('blog:cbv-index')
+            response= self.client.get(url) 
+             # response = self.client.get(reverse('blog:index')) ترکیب همون دوخط بالا
+            
+            # self.assertEqual(response.status_code, 200)
+            self.assertTrue(str(response.content).find("index") )
+        
 
     # def test_blog_home_view(self):
     #     """ Test the blog home view.
