@@ -13,6 +13,7 @@ class TestBlogViews(TestCase):
         """
         self.client = Client()
         
+        
     def test_blog_index_url_response_200(self):
         """ Test the blog index URL response.
         این متد برای تست پاسخ URL صفحه اصلی بلاگ استفاده می‌شود. 
@@ -34,21 +35,21 @@ class TestBlogViews(TestCase):
             self.assertEqual(response.status_code, 200)
             self.assertTrue(str(response.content).find("index") )
             self.assertTrue(str(response.content).find("cbv") )
-            self.assertTrue(response, str(response.content).find("saber") )
-            self.assertTemplateUsed(response,template_name="index.html")
+            self.assertTrue(str(response.content).find("saber") )
+            # self.assertTemplateUsed(response,template_name="index.html")
                
         
 
-    # def test_blog_home_view(self):
-    #     """ Test the blog home view.
-    #     این متد برای تست ویو صفحه اصلی بلاگ استفاده می‌شود. 
-    #     """
-    #     url=reverse('blog:index')
-    #     response= self.client.get(url) 
-    #     # response = self.client.get(reverse('blog:index')) ترکیب همون دوخط بالا
+    def test_blog_home_view(self):
+        """ Test the blog home view.
+        این متد برای تست ویو صفحه اصلی بلاگ استفاده می‌شود. 
+        """
+        url=reverse('blog:cbv-index')
+        response= self.client.get(url) 
+        # response = self.client.get(reverse('blog:index')) ترکیب همون دوخط بالا
        
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertTemplateUsed(response, 'blog/blog_home.html')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response ,template_name="index.html")
 
     # def test_blog_list_view(self):
     #     """ Test the blog list view.
