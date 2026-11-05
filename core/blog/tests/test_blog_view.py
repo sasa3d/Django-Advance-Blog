@@ -29,10 +29,14 @@ class TestBlogViews(TestCase):
             """
             url=reverse('blog:cbv-index')
             response= self.client.get(url) 
-             # response = self.client.get(reverse('blog:index')) ترکیب همون دوخط بالا
+             # response = self.client.get(reverse('blog:cbv-index')) ترکیب همون دوخط بالا
             
-            # self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.status_code, 200)
             self.assertTrue(str(response.content).find("index") )
+            self.assertTrue(str(response.content).find("cbv") )
+            self.assertTrue(response, str(response.content).find("saber") )
+            self.assertTemplateUsed(response,template_name="index.html")
+               
         
 
     # def test_blog_home_view(self):
