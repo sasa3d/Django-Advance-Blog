@@ -32,5 +32,7 @@ class TestBlogPostAPI:
             'status' : True ,
             'published_date' : timezone.now()
         }
+        
+        self.client.force_authenticate(user={})
         response = self.client.post(url, data=data_test)
-        assert response.status_code == 401
+        assert response.status_code ==403
