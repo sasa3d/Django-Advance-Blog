@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.utils import timezone
 from rest_framework.test import APIClient
 import pytest 
+from accounts.models import User
 
 
 """ this decorator is used to define a fixture function that can be used in test functions."""
@@ -16,6 +17,16 @@ def api_client():
     clnt= APIClient()
     return clnt
     # return APIClient() معادل دوخط بالا
+    
+@pytest.fixture
+def fix_cmmn_usr():
+    """ این تابع به همرا فیکسچرش یک user برای  استفاده در تستها ایجاد میکند"""
+    usr = User.objects.create_user(
+        email= "admin@admin.com" , password= "12345@admin" , is_verified= True
+        )
+    return usr
+    
+
 
 """ this decorator is used to mark a test class or test function as requiring access to the database. """
 @pytest.mark.django_db
@@ -27,7 +38,7 @@ class TestBlogPostAPI:
     #     ("invalid", 400),
     # ])
     def test_get_blog_post_response_200_status(self, api_client):
-        """this """
+        """ this def """
         # response = client.get(f"/api/blog/posts/{post_id}")
         # client = APIClient()
         # client.post('/notes/', {'title': 'new idea'}, format='json')
@@ -36,7 +47,7 @@ class TestBlogPostAPI:
         response = api_client.get(url)
         assert response.status_code == 200
         
-    def test_create_post_response_401_status(self, api_client):
+    def test_create_post_response_201_status(self, api_client, fix_cmmn_usr):
         """ This test is for api post request in pytest 
         این تست برای بررسی وضعیت پاسخ درخواست پست API در pytest است. """
         # client = APIClient()
@@ -49,8 +60,10 @@ class TestBlogPostAPI:
         }
         
         # self.client.force_authenticate(user={})
-        api_client.force_authenticate(user={})
-        
+        # api_client.force_authenticate(user={})
+        usr = fix_cmmn_usr
+        api_client.force_login(user = usr)
         # response = self.client.post(url, data=data_test)
         response = api_client.post(url, data=data_test)
-        assert response.status_code ==403
+        # assert response.status_code ==403
+        assert response.status_code == 201
