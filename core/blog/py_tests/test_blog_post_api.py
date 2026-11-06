@@ -47,7 +47,7 @@ class TestBlogPostAPI:
         response = api_client.get(url)
         assert response.status_code == 200
         
-    def test_create_post_response_201_status(self, api_client, fix_cmmn_usr):
+    def test_create_post_valid_data_response_201_status(self, api_client, fix_cmmn_usr):
         """ This test is for api post request in pytest 
         این تست برای بررسی وضعیت پاسخ درخواست پست API در pytest است. """
         # client = APIClient()
@@ -67,3 +67,19 @@ class TestBlogPostAPI:
         response = api_client.post(url, data=data_test)
         # assert response.status_code ==403
         assert response.status_code == 201
+        
+        
+    
+    def test_create_post_invalid_data_response_400_status(self, api_client, fix_cmmn_usr):
+        """this test"""
+        url = reverse("blog:api-v1:post-list")
+        data_test= {
+            'title' : '',
+            'content' : 'describe for me' ,
+            'status' : True ,
+            'published_date' : timezone.now()
+         }
+        usr = fix_cmmn_usr
+        api_client.force_authenticate(user = usr)
+        response = api_client.post(url, data=data_test)
+        assert response.status_code == 400
