@@ -66,10 +66,11 @@ class PostListView(PermissionRequiredMixin ,LoginRequiredMixin, ListView):  # no
     ordering = ["-id"]
     
 #django.views.generic.detail import DetailView
-class PostDetailView(PermissionRequiredMixin, LoginRequiredMixin, DetailView):
+class PostDetailView(LoginRequiredMixin, DetailView):
     model = Post
     # template_name = "blog/post_detail.html"
     # context_object_name = "post"
+    
     permission_required = "blog.view_post"
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

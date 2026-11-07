@@ -23,9 +23,9 @@ class TestPostModel(TestCase):
         """
         post = Post.objects.create(
             author=self.profile ,
-            # title="Test Post",
-#             content="This is a test post content.",
-            # status=True,
+            title="Test Post",
+            content="This is a test post content.",
+            status=True,
             category=None,  # You can set this to a valid Category instance if needed
             published_date=datetime.now(),
         )

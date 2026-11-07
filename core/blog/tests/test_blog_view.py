@@ -88,12 +88,13 @@ class TestBlogViews(TestCase):
         self.assertEqual(
         response.status_code,
         302,
-        f"Redirected to: {response.headers.get('Location')}",
+        f"Redirected to: {response.headers.get('Location')}"
 )
     
     def test_blog_post_detail_anonymous_response2(self):
         """ Test the blog post detail view for anonymous users.
-        این متد برای تست ویو جزئیات پست بلاگ برای کاربران ناشناس استفاده می‌شود."""
+        این متد برای تست ویو جزئیات پست بلاگ برای کاربران ناشناس استفاده می‌شود.
+        """
         
         url = reverse("blog:post-detail", kwargs={"pk": self.post.pk})
         response = self.client.get(url)
@@ -103,8 +104,16 @@ class TestBlogViews(TestCase):
             fetch_redirect_response=False,
         )
         
-        def test_blog_post_detail_logged_in_response(self):
-                """ this """
+    def test_blog_post_detail_logged_in_response(self):
+        """ """
+        self.client.force_login(self.user) # این خط گم‌شده‌ی پازل ماست!
+        url = reverse("blog:post-detail", kwargs={"pk": self.post.pk})
+        response= self.client.get(url)
+
+        # print("Redirects to:", response.get("Location"))
+        self.assertEqual(response.status_code, 200)
+           
+       
     
 
     # def test_blog_list_view(self):
