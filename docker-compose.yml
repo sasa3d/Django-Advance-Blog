@@ -10,10 +10,14 @@ services:
       - ./staticfiles:/app/staticfiles
     ports:
       - "8000:8000"
+    dns:
+      - 223.5.5.5
     environment:
+      
       - SECRET_KEY=your_secret_key
       - DEBUG=True
       - ALLOWED_HOSTS=localhost,0.0.0.0,127.0.0.1
+      - PIP_INDEX_URL=https://mirrors.aliyun.com/pypi/simple/
     depends_on:
       - smtp4dev  # اگر backend به smtp نیاز داره
 

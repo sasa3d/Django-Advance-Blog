@@ -1,6 +1,7 @@
 from django.test import SimpleTestCase , TestCase
+from django.utils import timezone
 from ..forms import PostForm # ..forms import PostForm
-from datetime import datetime
+# from datetime import datetime
 from ..models import Category, Post
 
 from accounts.models import Profile ,User
@@ -27,7 +28,7 @@ class TestPostModel(TestCase):
             content="This is a test post content.",
             status=True,
             category=None,  # You can set this to a valid Category instance if needed
-            published_date=datetime.now(),
+            published_date=timezone.now(),
         )
 
         # Check if the instance was created successfully

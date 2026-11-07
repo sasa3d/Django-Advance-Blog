@@ -22,3 +22,12 @@ djoser>=2.2.0
 
 #todo email third party modules:
 django-mail-templated==2.6.5
+
+#todo refactoring and tests :
+black
+flake8
+pytest==9.2.0
+pytest-django==4.14.0
+
+
+

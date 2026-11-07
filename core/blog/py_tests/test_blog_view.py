@@ -1,4 +1,5 @@
-from datetime import datetime
+# from datetime import datetime
+from django.utils import timezone
 
 from django.test import Client, TestCase
 from django.urls import reverse
@@ -32,7 +33,7 @@ class TestBlogViews(TestCase):
                 content="This is a test post content.",
                 status=True,
                 category=None,  # You can set this to a valid Category instance if needed
-                published_date=datetime.now(),
+                published_date=timezone.now()
             )
         
         
@@ -105,7 +106,7 @@ class TestBlogViews(TestCase):
         )
         
     def test_blog_post_detail_logged_in_response(self):
-        """ """
+        """ this """
         self.client.force_login(self.user) # این خط گم‌شده‌ی پازل ماست!
         url = reverse("blog:post-detail", kwargs={"pk": self.post.pk})
         response= self.client.get(url)
