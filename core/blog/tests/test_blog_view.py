@@ -77,6 +77,9 @@ class TestBlogViews(TestCase):
     #     pass
     
     def test_blog_post_detail_anonymouse_response(self) :
+        """ Test the blog post detail view for anonymous users.
+        این متد برای تست ویو جزئیات پست بلاگ برای کاربران ناشناس استفاده می‌شود."""
+        
         response = self.client.get(
             reverse("blog:post-detail", kwargs={"pk": self.post.pk})
 )
@@ -88,16 +91,21 @@ class TestBlogViews(TestCase):
         f"Redirected to: {response.headers.get('Location')}",
 )
     
-    def test_blog_post_detail_anonymous_response(self):
+    def test_blog_post_detail_anonymous_response2(self):
+        """ Test the blog post detail view for anonymous users.
+        این متد برای تست ویو جزئیات پست بلاگ برای کاربران ناشناس استفاده می‌شود."""
+        
         url = reverse("blog:post-detail", kwargs={"pk": self.post.pk})
         response = self.client.get(url)
-
         self.assertRedirects(
             response,
             f"/accounts/login/?next={url}",
             fetch_redirect_response=False,
         )
-
+        
+        def test_blog_post_detail_logged_in_response(self):
+                """ this """
+    
 
     # def test_blog_list_view(self):
     #     """ Test the blog list view.
